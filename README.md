@@ -11,7 +11,9 @@ This project is based on several researches including my own in the field of Opi
 ### Usage
 
 Install python 2.6/2.7
+
 Install NLTK 
+
 Install Corpora, I think the only one that you need is the Languages, but I am not sure...
 
 
@@ -25,7 +27,8 @@ Wait few minutes till you see:
 	OK
 
 Run connection test:
-	pythoin tests/moodClientServerTest.py
+
+	python tests/moodClientServerTest.py
 
 If all is good you should see:
 
@@ -41,7 +44,7 @@ Classification daemon can be started in following modes:
 	moodClassifierd.py start
 	
 	# stop detached daemon
-	moodClassifierd.py start
+	moodClassifierd.py stop
 
 	# start in debug mode (prints log to stdout)
 	moodClassifierd.py debug
