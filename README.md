@@ -18,7 +18,8 @@ Install Corpora, I think the only one that you need is the Languages, but I am n
 
 
 Start the classification daemon:
-
+	
+	cd tracker
 	python moodClassifierd.py debug
 
 Wait few minutes till you see:
