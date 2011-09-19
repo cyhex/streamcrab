@@ -10,12 +10,11 @@ This project is based on several researches including my own in the field of Opi
 
 ### Usage
 
-Install python 2.6/2.7
+Install python 2.6
 
 Install NLTK 
 
-Install Corpora, I think the only one that you need is the Languages, but I am not sure...
-
+Install all NLTK Corpora ( needed langid,Porter Stemmer, wordnet, stopwords )
 
 Start the classification daemon:
 	
