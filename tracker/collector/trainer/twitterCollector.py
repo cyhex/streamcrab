@@ -11,14 +11,16 @@ from datetime import datetime
 
 
 class streamCollector(threading.Thread):
-    
+    """ List of keywords to track"""
     trackingK = [':)']
+    
+    """ Limit (how many tweets should be received before quitting ) """
+    limit = 1000000
     
     def __init__(self,tweetsQ,stop_event):
         threading.Thread.__init__(self)
         self.q = tweetsQ
         self.stop_event = stop_event
-        self.limit = 1000000
         self.start_t = time.time()
         self.c = 0
         
