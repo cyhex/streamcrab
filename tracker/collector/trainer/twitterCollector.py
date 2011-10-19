@@ -17,6 +17,10 @@ class streamCollector(threading.Thread):
     """ Limit (how many tweets should be received before quitting ) """
     limit = 1000000
     
+    """ Twitter user/pass"""
+    twitterUser = 'your_twitter_username'
+    twitterPass = 'your_twitter_pass'
+    
     def __init__(self,tweetsQ,stop_event):
         threading.Thread.__init__(self)
         self.q = tweetsQ
@@ -25,7 +29,7 @@ class streamCollector(threading.Thread):
         self.c = 0
         
     def collect(self):
-        stream = tweetstream.TrackStream("username", "password",keywords=self.trackingK, url='http://stream.twitter.com/1/statuses/filter.json')  
+        stream = tweetstream.TrackStream(self.twitterUser, self.twitterPass ,keywords=self.trackingK, url='http://stream.twitter.com/1/statuses/filter.json')  
         for tweet in stream:
             
             if self.c and self.c % 1000 == 0:
