@@ -29,7 +29,7 @@ class streamCollector(threading.Thread):
         self.c = 0
         
     def collect(self):
-        stream = tweetstream.TrackStream(self.twitterUser, self.twitterPass ,keywords=self.trackingK, url='http://stream.twitter.com/1/statuses/filter.json')  
+        stream = tweetstream.TrackStream(self.twitterUser, self.twitterPass ,keywords=self.trackingK, url='https://stream.twitter.com/1/statuses/filter.json')  
         for tweet in stream:
             
             if self.c and self.c % 1000 == 0:
