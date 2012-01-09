@@ -81,6 +81,30 @@ Second step is to classify the data, that can be done with:
 
 You need to adjust tweetClassifier.py file for your needs.
 
+### Hot to build your own dataset
+for my test I used smilies to determine the initial user sentiment, then the most non informative features are removed in order to slim down the DB and speedup the overall performance.
+However for production systems that most likely wont be good enough.
+
+Best way would be to classify the texts by hand using crowd sourcing or something similar.  
+An alternative would be to search for genre specific texts with classifications (ie. Movies reviews on IMDB; assuming its legal) and compiling a dataset out of it.
+
+It is also worth mentioning that positive dataset should be as close as possible in quantity and quality to the negative dataset for obvious reasons...  
+
+
+### How to test your own datasets
+
+Rule number one; Please do remember that testing a single tweet/text would not yield a good picture of your datasets performance. In fact you would need to use test classes to check your dataset performance. From my experience, test with around 300k tweets most likely to give a proper overview of your datasets performance.
+
+For general testing a tests/accuracyTest2.py gives a good overview of the system performance. In fact you can also use it to get in-deep analysis of your dataset performance:
+
+		MD.classifier.show_most_informative_features(n=100) 
+
+
+For more info read:
+http://nltk.github.com/api/nltk.classify.html#module-nltk.classify.naivebayes
+http://nltk.googlecode.com/svn/trunk/doc/howto/classify.html
+
+
 ### Licensing
 GPLv3
 	
