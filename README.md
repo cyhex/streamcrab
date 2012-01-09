@@ -81,11 +81,11 @@ Second step is to classify the data, that can be done with:
 
 You need to adjust tweetClassifier.py file for your needs.
 
-### Hot to build your own dataset
+### How to build your own dataset
 for my test I used smilies to determine the initial user sentiment, then the most non informative features are removed in order to slim down the DB and speedup the overall performance.
 However for production systems that most likely wont be good enough.
 
-Best way would be to classify the texts by hand using crowd sourcing or something similar.  
+One way would be to classify the texts by hand using crowd sourcing or something similar.  
 An alternative would be to search for genre specific texts with classifications (ie. Movies reviews on IMDB; assuming its legal) and compiling a dataset out of it.
 
 It is also worth mentioning that positive dataset should be as close as possible in quantity and quality to the negative dataset for obvious reasons...  
