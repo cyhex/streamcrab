@@ -101,8 +101,11 @@ For general testing a tests/accuracyTest2.py gives a good overview of the system
 
 
 For more info read:
+
 http://nltk.github.com/api/nltk.classify.html#module-nltk.classify.naivebayes
+
 http://nltk.googlecode.com/svn/trunk/doc/howto/classify.html
+
 
 
 ### Licensing
