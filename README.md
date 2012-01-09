@@ -93,7 +93,7 @@ It is also worth mentioning that positive dataset should be as close as possible
 
 ### How to test your own datasets
 
-Rule number one; Please do remember that testing a single tweet/text would not yield a good picture of your datasets performance. In fact you would need to use test classes to check your dataset performance. From my experience, test with around 300k tweets most likely to give a proper overview of your datasets performance.
+Rule number one; Please do remember that testing a single tweets/texts would not yield anything userful. In fact you would need to use test classes to check your dataset performance. From my experience, test with around 300k tweets most likely to give a proper overview of your datasets performance.
 
 For general testing a tests/accuracyTest2.py gives a good overview of the system performance. In fact you can also use it to get in-deep analysis of your dataset performance:
 
