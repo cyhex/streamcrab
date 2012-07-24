@@ -28,7 +28,7 @@ Wait few minutes till you see:
 
 In another terminal, run connection test:
 
-        cd {smm}/tracker/tests
+	cd {smm}/tracker/tests
 	python moodClientServerTest.py
 
 If all is good you should see:
