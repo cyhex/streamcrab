@@ -14,11 +14,11 @@ Install python 2.6
 
 Install NLTK
 
-Install all NLTK Corpora ( needed langid,Porter Stemmer, wordnet, stopwords )
+Install all NLTK Corpora ( needed langid, Porter Stemmer, wordnet, stopwords )
 
 Start the classification daemon:
 
-	cd tracker
+	cd {smm}/tracker
 	python moodClassifierd.py debug
 
 Wait few minutes till you see:
@@ -26,9 +26,9 @@ Wait few minutes till you see:
 	starting debug mode...
 	OK
 
-Run connection test:
-
-	python tests/moodClientServerTest.py
+In another terminal, run connection test:
+        cd {smm}/tracker/tests
+	python moodClientServerTest.py
 
 If all is good you should see:
 
@@ -36,7 +36,7 @@ If all is good you should see:
 
 
 ### Classification daemon
-By default classification daemon (moodClassifierd.py) listens on all IPs on port 6666.
+By default, the classification daemon (moodClassifierd.py) listens on all IPs on port 6666.
 
 Classification daemon can be started in following modes:
 
@@ -54,16 +54,16 @@ Classification daemon can be started in following modes:
 
 	lib/moodClassifierClient.py
 
-Is a TCP client for Classification daemon, for more info and usage look at the source code in:
+is a TCP client for Classification daemon, for more info and usage look at the source code in:
 
 	lib/moodClassifierClient.py
 	tests/moodClientServerTest.py
 
 
 ### Training data
-It perhaps the most important part, as it is responsible for accuracy of the results. SMM comes with a small training dataset and its good mostly for testing the system.
+This is perhaps the most important part, as it is responsible for accuracy of the results. SMM comes with a small training dataset and its good mostly for testing the system.
 
-For good results it is impotent to build a better data set.
+For good results it is important to build a better data set.
 
 
 ### Build Training Dataset
@@ -93,9 +93,9 @@ It is also worth mentioning that positive dataset should be as close as possible
 
 ### How to test your own datasets
 
-Rule number one; Please do remember that testing a single tweets/texts would not yield anything userful. In fact you would need to use test classes to check your dataset performance. From my experience, test with around 300k tweets most likely to give a proper overview of your datasets performance.
+Rule number one:  Please do remember that testing a single tweet/text will not yield anything useful. In fact you would need to use test classes to check your dataset performance. From my experience, tests with around 300k tweets most likely to give a proper overview of your datasets performance.
 
-For general testing a tests/accuracyTest2.py gives a good overview of the system performance. In fact you can also use it to get in-deep analysis of your dataset performance:
+For general testing a tests/accuracyTest2.py gives a good overview of the system performance. In fact you can also use it to get in-depth analysis of your dataset performance:
 
 		MD.classifier.show_most_informative_features(n=100)
 
