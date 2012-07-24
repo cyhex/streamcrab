@@ -12,12 +12,12 @@ This project is based on several researches including my own in the field of Opi
 
 Install python 2.6
 
-Install NLTK 
+Install NLTK
 
 Install all NLTK Corpora ( needed langid,Porter Stemmer, wordnet, stopwords )
 
 Start the classification daemon:
-	
+
 	cd tracker
 	python moodClassifierd.py debug
 
@@ -42,13 +42,13 @@ Classification daemon can be started in following modes:
 
 	# start and detach from terminal
 	moodClassifierd.py start
-	
+
 	# stop detached daemon
 	moodClassifierd.py stop
 
 	# start in debug mode (prints log to stdout)
 	moodClassifierd.py debug
-	
+
 
 ### Classification daemon client
 
@@ -70,7 +70,7 @@ For good results it is impotent to build a better data set.
 
 The first part of building the data set is collecting raw data, that can be done using
 
-	python collector/trainer/twitterCollector.py 
+	python collector/trainer/twitterCollector.py
 
 You need to adjust twitterCollector.py file for your needs.
 
@@ -85,10 +85,10 @@ You need to adjust tweetClassifier.py file for your needs.
 for my test I used smilies to determine the initial user sentiment, then the most non informative features are removed in order to slim down the DB and speedup the overall performance.
 However for production systems that most likely wont be good enough.
 
-One way would be to classify the texts by hand using crowd sourcing or something similar.  
+One way would be to classify the texts by hand using crowd sourcing or something similar.
 An alternative would be to search for genre specific texts with classifications (ie. Movies reviews on IMDB; assuming its legal) and compiling a dataset out of it.
 
-It is also worth mentioning that positive dataset should be as close as possible in quantity and quality to the negative dataset for obvious reasons...  
+It is also worth mentioning that positive dataset should be as close as possible in quantity and quality to the negative dataset for obvious reasons...
 
 
 ### How to test your own datasets
@@ -97,7 +97,7 @@ Rule number one; Please do remember that testing a single tweets/texts would not
 
 For general testing a tests/accuracyTest2.py gives a good overview of the system performance. In fact you can also use it to get in-deep analysis of your dataset performance:
 
-		MD.classifier.show_most_informative_features(n=100) 
+		MD.classifier.show_most_informative_features(n=100)
 
 
 For more info read:
@@ -110,4 +110,3 @@ http://nltk.googlecode.com/svn/trunk/doc/howto/classify.html
 
 ### Licensing
 GPLv3
-	
