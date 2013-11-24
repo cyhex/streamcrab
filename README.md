@@ -107,6 +107,33 @@ http://nltk.github.com/api/nltk.classify.html#module-nltk.classify.naivebayes
 
 http://nltk.googlecode.com/svn/trunk/doc/howto/classify.html
 
+### Sources
+
+- Some Issues on Detecting Negation from Text 
+  Eduardo Blanco and Dan Moldovan
+  Human Language Technology Research Institute
+  The University of Texas at Dallas
+  Richardson, TX 75080 USA
+
+
+- Natural Language Processing Applications
+  Claire Gardent
+  CNRS/LORIA
+  Campus Scientifique,
+  BP 239,
+  F-54 506 Vandœuvre-l`s-Nancy, Fra
+
+
+- Opinion Mining & Summarization
+  Bing Liu
+  Department of Computer Science
+  University of Illinois at Chicago
+
+
+- Twitter Sentiment Classification using Distant Supervision
+  Alec Go, Richa Bhayani, Lei Huang
+  Stanford University
+  Stanford, CA 94305
 
 
 ### Licensing
