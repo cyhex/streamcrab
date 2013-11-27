@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='smm',
@@ -10,6 +10,7 @@ setup(
     author_email='timor@cyhex.com',
     description='Real-Time, multi-lingual Twitter sentiment analyzer engine',
     install_requires=[
-        "tweetstream"
+        "twitter",
+        "mongoengine",
     ],
 )
