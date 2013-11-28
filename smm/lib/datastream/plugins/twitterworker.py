@@ -5,6 +5,8 @@ import twitter
 import time
 from smm.models import RawStreamQueue, StreamSource, SocketSession
 from smm import config
+import logging
+logger = logging.getLogger('TwitterWorker')
 
 
 class TwitterWorkerKwChange(Exception):
@@ -29,23 +31,29 @@ class TwitterWorker(DataStreamAbstract):
         self.kw_last_check = time.time()
 
     def run(self):
+        logger.info("started")
         while True:
             if self.terminate.isSet():
+                logger.info("Terminated")
                 return None
 
             try:
                 self.get_tweets()
 
-            except TwitterWorkerKwChange:
-                pass
+            except TwitterWorkerKwChange, e:
+                logger.info(e.message)
 
-            except TwitterWorkerKwEmpty:
-                time.sleep(config.twitter_kw_interval_check/2)
+            except TwitterWorkerKwEmpty, e:
+                sleep_int = config.twitter_kw_interval_check/2
+                logger.info(e.message + ' sleeping for %s',sleep_int )
+                time.sleep(sleep_int)
 
             except twitter.TwitterHTTPError, e:
+                logger.info(e.message)
                 time.sleep(config.twitter_http_error_sleep)
 
             except TwitterWorkerTerminate:
+                logger.info("Terminated")
                 return None
 
     def get_tweets(self):
@@ -85,6 +93,7 @@ class TwitterWorker(DataStreamAbstract):
             o.source = StreamSource.TWITTER
             o.text = tweet['text']
             o.save()
+            logger.debug("RawStreamQueue saved with id %s", o.id)
 
     def is_tweet_valid(self, tweet):
         if tweet and not 'delete' in tweet and 'lang' in tweet and tweet['lang'] == 'en' and 'text' in tweet:
