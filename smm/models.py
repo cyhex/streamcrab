@@ -2,6 +2,7 @@ __author__ = 'gx'
 import mongoengine
 import datetime
 import hashlib
+from smm import config
 
 class StreamSource(object):
     TWITTER = "twitter"
@@ -59,3 +60,7 @@ class SocketSession(mongoengine.Document):
     def get_keywords_hash(cls):
         k = str(cls.get_keywords())
         return hashlib.sha1(k).hexdigest()
+
+
+def connect(conf=config.mongo_db):
+    mongoengine.connect(**conf)

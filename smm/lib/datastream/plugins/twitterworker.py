@@ -57,6 +57,7 @@ class TwitterWorker(DataStreamAbstract):
         iterator = stream.statuses.filter(track=",".join(self.kw_track))
 
         for tweet in iterator:
+
             if self.terminate.isSet():
                 raise TwitterWorkerTerminate()
 
