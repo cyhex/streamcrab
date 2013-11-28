@@ -1,48 +1,22 @@
 __author__ = 'gx'
 import threading
-import Queue
-
+from plugins.twitterworker import TwitterWorker
 
 class WorkerPool(object):
 
     def __init__(self):
-        self.terminate = threading.Event()
-        self.keyword_hash = None
+        self.kill = threading.Event()
         self.pool = []
-        self.workers = []
-        self.fifo = Queue.Queue()
-        self.keywords = []
 
     def start(self):
-        self.start_pool()
+        twitter_worker = TwitterWorker(self.kill)
+        twitter_worker.setDaemon(True)
+        twitter_worker.start()
+        self.pool.append(twitter_worker)
 
-        while True:
-            self.process_queue()
-
-            if self.keyword_change():
-                self.restart_pool()
-
-    def process_queue(self):
-        task = self.fifo.get()
-        task.task_done()
-
-    def restart_pool(self):
-        self.terminate.set()
-        self.join_pool()
-        self.keyword_hash = 'newHash'
-        self.terminate.clear()
-        self.start_pool()
-
-    def join_pool(self):
+    def join(self, timeout=None):
         for w in self.pool:
-            w.join()
+            w.join(timeout)
 
-    def start_pool(self):
-        for w in self.workers:
-            i = w(self.terminate)
-            i.setDaemon(True)
-            i.start()
-
-    def keyword_change(self):
-
-        return True
+    def terminate(self):
+        self.kill.set()

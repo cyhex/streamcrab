@@ -8,8 +8,6 @@ class TestSocketSession(TestCaseDB):
 
     def testRemoveExpired(self):
         SocketSession.TTL = 1
-        mongoengine.connect('test')
-        SocketSession.drop_collection()
         s = SocketSession()
         s.ip = "x1"
         s.keywords = []
@@ -25,10 +23,9 @@ class TestSocketSession(TestCaseDB):
         time.sleep(SocketSession.TTL/2.0)
         SocketSession.remove_expired()
         self.assertEquals(1, SocketSession.objects.count())
-        SocketSession.drop_collection()
 
 
-    def testKeywords(self):
+    def testKeywordsHash(self):
         s = SocketSession()
         s.ip = "x3"
         s.keywords = ['a','b']
@@ -38,17 +35,23 @@ class TestSocketSession(TestCaseDB):
         s.ip = "x3"
         s.keywords = ['c','d']
         s.save()
-        expected = set([u'a', u'c', u'b', u'd'])
 
-        self.assertEqual(expected, SocketSession.get_keywords())
         self.assertEqual('61f728a510729c464bc80910333199ba7dabe92b', SocketSession.get_keywords_hash())
 
-        s = SocketSession.objects.first()
-        s.keywords = []
+
+    def testKeywordsSet(self):
+        s = SocketSession()
+        s.ip = "x3"
+        s.keywords = ['a','b']
         s.save()
 
-        self.assertNotEqual(expected, SocketSession.get_keywords())
-        self.assertNotEqual('61f728a510729c464bc80910333199ba7dabe92b', SocketSession.get_keywords_hash())
+        s = SocketSession()
+        s.ip = "x3"
+        s.keywords = ['a','c']
+        s.save()
+        expected = set([u'a', u'b', u'c'])
+
+        self.assertEqual(expected, SocketSession.get_keywords())
 
 
     def tearDown(self):

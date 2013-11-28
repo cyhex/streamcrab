@@ -1,28 +1,28 @@
 from abstract import TestCaseDB
 from smm.lib.datastream.plugins.twitterworker import TwitterWorker
 from smm.models import RawStreamQueue, SocketSession
-import time
 import threading
+import time
+__author__ = 'gx'
 
 class TestTwitterWorker(TestCaseDB):
 
-    def test_worker(self):
+    def test_workerSleep(self):
         """
-        test single twitter worker
+        twitter collector should sleep if not keywords found
         """
-        s = SocketSession(ip='x')
-        s.keywords = ['google','bieber']
-        s.save()
+        RawStreamQueue.drop_collection()
+        SocketSession.drop_collection()
         kill = threading.Event()
 
+        self.assertEqual(len(SocketSession.get_keywords()),0)
         w = TwitterWorker(kill)
         w.setDaemon(True)
         w.start()
-
-        # sleep is needed in order to get at least couple of tweets
         time.sleep(1)
         kill.set()
-        self.assertGreater(RawStreamQueue.objects.count(), 0)
+        self.assertEqual(RawStreamQueue.objects.count(), 0)
+
 
     def tearDown(self):
         RawStreamQueue.drop_collection()

@@ -1,0 +1,25 @@
+from abstract import TestCaseDB
+from smm.lib.datastream.workerPool import WorkerPool
+from smm.models import RawStreamQueue, SocketSession
+import time
+
+class TestWorkerPool(TestCaseDB):
+
+    def test_start(self):
+        """
+        test datastream worker pool
+        """
+        s = SocketSession(ip='x')
+        s.keywords = ['google', 'bieber']
+        s.save()
+
+        w = WorkerPool()
+        w.start()
+        time.sleep(1)
+        w.terminate()
+
+        self.assertGreater(RawStreamQueue.objects.count(), 0)
+
+    def tearDown(self):
+        RawStreamQueue.drop_collection()
+        SocketSession.drop_collection()
