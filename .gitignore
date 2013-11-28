@@ -29,6 +29,7 @@ nosetests.xml
 
 # Translations
 *.mo
+smm/config.py
 
 # Mr Developer
 .mr.developer.cfg

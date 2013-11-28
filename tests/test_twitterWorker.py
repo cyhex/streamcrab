@@ -7,7 +7,4 @@ __author__ = 'gx'
 
 class TestTwitterWorker(TestCase):
     def test_run(self):
-        w = TwitterWorker()
-        w.setDaemon(True)
-        w.start()
-        w.join()
+        self.fail('test needed')
