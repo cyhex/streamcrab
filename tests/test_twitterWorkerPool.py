@@ -1,7 +1,9 @@
-from abstract import TestCaseDB
-from smm.lib.datastream.workerPool import WorkerPool
-from smm.models import RawStreamQueue, SocketSession
 import time
+
+from abstract import TestCaseDB
+from smm.datastream.workerPool import WorkerPool
+from smm.models import RawStreamQueue, SocketSession
+
 
 class TestWorkerPool(TestCaseDB):
 

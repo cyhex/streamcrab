@@ -1,9 +1,10 @@
 __author__ = 'gx'
-from smm.lib.datastream.workerPool import WorkerPool
-from smm import models
 import time
-
 import logging
+
+from smm.datastream.workerPool import WorkerPool
+from smm import models
+
 
 logger = logging.getLogger('start-collector')
 

@@ -1,8 +1,10 @@
-from abstract import TestCaseDB
-from smm.lib.datastream.plugins.twitterworker import TwitterWorker
-from smm.models import RawStreamQueue, SocketSession
 import time
 import threading
+
+from abstract import TestCaseDB
+from smm.datastream.plugins.twitterworker import TwitterWorker
+from smm.models import RawStreamQueue, SocketSession
+
 
 class TestTwitterWorker(TestCaseDB):
 
