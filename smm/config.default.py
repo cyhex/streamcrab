@@ -1,8 +1,6 @@
 __author__ = 'gx'
 import logging
 
-
-
 ############## MONGODB #############
 # live db
 mongo_db = dict(db='smm', host='localhost', port=27017, is_slave=False, read_preference=False,
@@ -36,6 +34,6 @@ logging.basicConfig(level=logging.DEBUG, format='%(name)s: %(levelname)s %(messa
 # log INFO to file as well
 file = logging.FileHandler('smm.log', 'w')
 file.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
+formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 file.setFormatter(formatter)
 logging.getLogger('').addHandler(file)
