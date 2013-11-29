@@ -31,7 +31,7 @@ class TwitterWorker(DataStreamAbstract):
         self.kw_last_check = time.time()
 
     def run(self):
-        logger.info("started")
+        logger.info("started %s", self.getName())
         while True:
             if self.terminate.isSet():
                 logger.info("Terminated")
