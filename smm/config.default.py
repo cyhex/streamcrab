@@ -22,18 +22,20 @@ twitter_oauth_custsecret = ""
 #sleep for x seconds if twitter raises httpError exception
 twitter_http_error_sleep = 10
 
-#how offten should we check of changed keywords
-twitter_kw_interval_check = 60
+#how often should we check of changed keywords
+twitter_kw_interval_check = 10
 
 
 ### Logging ###
 
+logfile_path = os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..','smm.log' ))
 # default logging to console
 logging.basicConfig(level=logging.DEBUG, format='%(name)s: %(levelname)s %(message)s')
 
 # log INFO to file as well
-file = logging.FileHandler('smm.log', 'w')
-file.setLevel(logging.INFO)
+filelog = logging.FileHandler(logfile_path, 'w')
+filelog.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
-file.setFormatter(formatter)
-logging.getLogger('').addHandler(file)
+filelog.setFormatter(formatter)
+logging.getLogger('').addHandler(filelog)
+logging.getLogger(__name__).info(logfile_path)
