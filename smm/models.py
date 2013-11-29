@@ -4,16 +4,15 @@ import datetime
 import hashlib
 from smm import config
 
+
 class StreamSource(object):
     TWITTER = "twitter"
 
 
 class RawStreamQueue(mongoengine.Document):
-
     text = mongoengine.StringField(required=True, max_length=1024)
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
-
 
 
 class ClassifiedStream(mongoengine.Document):
@@ -29,15 +28,14 @@ class ClassifiedStream(mongoengine.Document):
 
 
 class SocketSession(mongoengine.Document):
+    meta = {
+        'indexes': ['ip', 'ttl'],
+    }
 
     TTL = 30
     ip = mongoengine.StringField(required=True, max_length=45)
     keywords = mongoengine.ListField(mongoengine.StringField(max_length=64))
     ttl = mongoengine.DateTimeField(default=datetime.datetime.now)
-
-    meta = {
-        'indexes': ['ip', 'ttl'],
-    }
 
     def ping(self):
         self.ttl = datetime.datetime.now()
@@ -56,6 +54,7 @@ class SocketSession(mongoengine.Document):
             k.update(set(s.keywords))
 
         return k
+
     @classmethod
     def get_keywords_hash(cls):
         k = str(cls.get_keywords())
