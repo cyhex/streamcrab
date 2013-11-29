@@ -8,3 +8,12 @@ Most obvious change - well it is re-written from scratch.
 
 Full changelog and Docs will follow.
 
+
+Training and testing corpora
+............................
+
+http://mpqa.cs.pitt.edu/
+http://nlp.stanford.edu/sentiment/index.html
+http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
+http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
+
