@@ -14,6 +14,6 @@ class TestStopWordsProcessor(TestCase):
         self.assertEqual(expect, result)
 
     def test_getClassifierTokens(self):
-        result = StopWordsProcessor.getSearchTokens(self.text)
+        result = StopWordsProcessor.getClassifierTokens(self.text)
         expect = set("hello name timor".split())
         self.assertEqual(expect, result)

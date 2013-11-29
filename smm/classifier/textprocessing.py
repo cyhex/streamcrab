@@ -96,9 +96,15 @@ class TwitterMixin(object):
 
 
 class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
+
     @classmethod
     def clean(cls, text):
         text = text.lower().strip()
         text = cls.char_fold(text)
         text = cls.word_map(text)
         return text
+
+    @classmethod
+    def getClassifierTokens(cls, text):
+        text = cls.remove_urls(cls.clean(text))
+        return StopWordsProcessor.getClassifierTokens(text) - set(stopwords)

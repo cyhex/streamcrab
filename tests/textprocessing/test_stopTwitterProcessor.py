@@ -19,6 +19,6 @@ class TestStopTwitterProcessor(TestCase):
         self.assertEqual(expect, result)
 
     def test_getClassifierTokens(self):
-        result = StopTwitterProcessor.getSearchTokens(self.text)
-        expect = set("hello  __h__  name  __not__  @timor #hashtag http://cyhex.com".split())
+        result = StopTwitterProcessor.getClassifierTokens(self.text)
+        expect = set("hello  __h__  name  __not__  @timor #hashtag".split())
         self.assertEqual(expect, result)
