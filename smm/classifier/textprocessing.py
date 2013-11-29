@@ -67,7 +67,7 @@ class TwitterMixin(object):
         return cls.re_numbers.sub('', text)
 
     @classmethod
-    def char_fold(cls,text):
+    def char_fold(cls, text):
         """
         fold repeating chars more the n3 times chars looooool -> lool
         """
@@ -76,8 +76,8 @@ class TwitterMixin(object):
 
         for i in range(len(char_list)):
             _c = char_list[i]
-            if i > 0 and i < len(char_list)-1:
-                if _c != char_list[i-1] or  _c != char_list[i+1]:
+            if i > 0 and i < len(char_list) - 1:
+                if _c != char_list[i - 1] or _c != char_list[i + 1]:
                     clean_list.append(_c)
             else:
                 clean_list.append(_c)
@@ -108,3 +108,13 @@ class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
     def getClassifierTokens(cls, text):
         text = cls.remove_urls(cls.clean(text))
         return StopWordsProcessor.getClassifierTokens(text) - set(stopwords)
+
+
+
+class StopPosTwitterProcessor(StopTwitterProcessor):
+
+    @classmethod
+    def getClassifierTokens(cls, text):
+        text = cls.remove_urls(cls.clean(text))
+        tokens = StopTwitterProcessor.getClassifierTokens(text)
+        return set(pos_tag(list(tokens)))
