@@ -9,8 +9,8 @@ class TestStopTwitterProcessor(TestCase):
         self.text = "hello :) my name is not @Timor #hashtag http://cyhex.com"
 
     def test_clean(self):
-        result = StopTwitterProcessor.clean(self.text)
-        expect = 'hello  __h__  my name is  __not__  @timor #hashtag http://cyhex.com'
+        result = StopTwitterProcessor.clean(self.text).split()
+        expect = 'hello  __h__  my name is  __not__  @timor #hashtag http://cyhex.com'.split()
         self.assertEqual(expect, result)
 
     def test_getSearchTokens(self):

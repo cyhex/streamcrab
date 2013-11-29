@@ -38,7 +38,7 @@ class TestTwitterMixin(TestCase):
         self.assertEqual(expect, result)
 
     def test_word_map(self):
-        text = "hello :) :( not xxx"
+        text = "hello :) :( not xxx :)"
         result = TwitterMixin.word_map(text).split()
-        expect = "hello __h__ __s__ __not__ xxx".split()
+        expect = "hello __h__ __s__ __not__ xxx __h__".split()
         self.assertEqual(expect, result)

@@ -4,7 +4,7 @@ setup(
     name='smm',
     version='0.2',
     packages=['smm'],
-    url='https://github.com/cyhex/smm',
+    url='https://github.com/cyhex/streamcrab',
     license='GPLv3',
     author='Timor A.',
     author_email='timor@cyhex.com',
@@ -12,5 +12,6 @@ setup(
     install_requires=[
         "twitter",
         "mongoengine",
+        "nltk"
     ],
 )
