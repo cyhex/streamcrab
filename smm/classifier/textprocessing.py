@@ -1,11 +1,15 @@
 from nltk import pos_tag
 from nltk import corpus
+from smm.classifier import emoticons
 import re
 
 stopwords = corpus.stopwords.words('english')
 
 
 class SimpleProcessor():
+    """
+    Simple word tokenizer
+    """
 
     @classmethod
     def clean(cls, text):
@@ -21,6 +25,9 @@ class SimpleProcessor():
 
 
 class StopWordsProcessor(SimpleProcessor):
+    """
+    Simple word tokenizer with stopwords filtering
+    """
 
     @classmethod
     def getSearchTokens(cls, text):
@@ -32,10 +39,15 @@ class StopWordsProcessor(SimpleProcessor):
 
 
 class TwitterMixin(object):
-
+    """
+        Special case of Twitter cleanup
+        Fold smilies to groups
+        Fold not so it will not be removed by stop words
+        Different Cleaners
+    """
     _mapping = {
-        '__h__': [':)', ':-)', ';-)', ': )', ':d', '=)', ':p', ';)', '<3'],
-        '__s__': [':(', ':-(', ': ('],
+        '__h__': emoticons.happy,
+        '__s__': emoticons.sad,
         '__not__': ['not']
     }
 
@@ -90,13 +102,15 @@ class TwitterMixin(object):
         """
         for label, items in cls._mapping.items():
             for item in items:
-                text = text.replace(item," %s " % label)
+                text = text.replace(item ," %s " % label)
 
         return text
 
 
 class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
-
+    """
+    stop words, TwitterMixin
+    """
     @classmethod
     def clean(cls, text):
         text = text.lower().strip()
@@ -112,7 +126,9 @@ class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
 
 
 class StopPosTwitterProcessor(StopTwitterProcessor):
-
+    """
+    Stop words, TwitterMixin, POS
+    """
     @classmethod
     def getClassifierTokens(cls, text):
         text = cls.remove_urls(cls.clean(text))
