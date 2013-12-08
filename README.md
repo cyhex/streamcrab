@@ -22,6 +22,19 @@ Installation
     python toolbox/setup-app.py
 
 
+Configure
+---------
+
+copy smm/config.default.py to smm/config.py
+
+    cp smm/config.default.py smm/config.py
+
+Edit smm/config.py according to your needs
+
+    nano smm/config.py
+
+
+
 Testing
 -------
 
