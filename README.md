@@ -22,6 +22,11 @@ Installation
     python toolbox/setup-app.py
 
 
+Testing
+-------
+
+    python -m unittest discover tests
+
 
 Training and testing corpora
 ----------------------------
