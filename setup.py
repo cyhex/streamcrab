@@ -12,6 +12,7 @@ setup(
     install_requires=[
         "twitter",
         "mongoengine",
-        "nltk"
+        "nltk",
+        'numpy'
     ],
 )

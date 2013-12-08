@@ -34,3 +34,4 @@ smm/config.py
 .project
 .pydevproject
 .idea
+venv
