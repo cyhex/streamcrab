@@ -21,6 +21,10 @@ class TwitterWorkerKwEmpty(Exception):
 class TwitterWorkerTerminate(Exception):
     pass
 
+
+class TwitterWorkerTimeout(Exception):
+    pass
+
 class TwitterWorker(DataStreamAbstract):
     def __init__(self, terminate):
         DataStreamAbstract.__init__(self, terminate)
@@ -48,11 +52,15 @@ class TwitterWorker(DataStreamAbstract):
 
             except TwitterWorkerKwEmpty, e:
                 sleep_int = config.twitter_kw_interval_check/2
-                logger.info(e.message + ' sleeping for %s',sleep_int )
+                logger.warn("%s - sleeping for %d sec", e.message,sleep_int)
                 time.sleep(sleep_int)
 
             except twitter.TwitterHTTPError, e:
-                logger.info(e.message)
+                logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
+                time.sleep(config.twitter_http_error_sleep)
+
+            except TwitterWorkerTimeout, e:
+                logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
                 time.sleep(config.twitter_http_error_sleep)
 
             except TwitterWorkerTerminate:
@@ -64,13 +72,16 @@ class TwitterWorker(DataStreamAbstract):
         if not self.kw_track:
             raise TwitterWorkerKwEmpty('keywords are empty')
 
-        stream = twitter.TwitterStream(auth=self.auth)
+        stream = twitter.TwitterStream(auth=self.auth, timeout=5)
         iterator = stream.statuses.filter(track=",".join(self.kw_track))
 
         for tweet in iterator:
 
             if self.terminate.isSet():
                 raise TwitterWorkerTerminate()
+
+            if tweet.get('timeout',False):
+                raise TwitterWorkerTimeout('Timeout')
 
             self.check_keywords()
             self.save(tweet)

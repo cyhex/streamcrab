@@ -20,7 +20,7 @@ twitter_oauth_custkey = ""
 twitter_oauth_custsecret = ""
 
 #sleep for x seconds if twitter raises httpError exception
-twitter_http_error_sleep = 10
+twitter_http_error_sleep = 20
 
 #how often should we check of changed keywords
 twitter_kw_interval_check = 10

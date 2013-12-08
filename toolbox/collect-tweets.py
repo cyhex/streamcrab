@@ -2,6 +2,7 @@ __author__ = 'gx'
 import twitter
 import argparse
 import sys
+import time
 from smm import models
 from smm.classifier import emoticons
 from smm import config
@@ -25,6 +26,10 @@ class TwitterCollectorException(Exception):
     pass
 
 
+class TwitterCollectorTimeoutException(Exception):
+    pass
+
+
 class TwitterCollector(object):
     def __init__(self, kw_track, polarity, total_target):
         self.kw_track = kw_track
@@ -39,20 +44,30 @@ class TwitterCollector(object):
             try:
                 self.get_tweets()
             except twitter.TwitterHTTPError, e:
-                logger.info(e.message)
+                logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
+                time.sleep(config.twitter_http_error_sleep)
+
             except TwitterCollectorException, e:
                 logger.info(e.message)
                 logger.info('Exit')
                 sys.exit(0)
 
+            except TwitterCollectorTimeoutException, e:
+                logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
+                time.sleep(config.twitter_http_error_sleep)
+
 
     def get_tweets(self):
         logger.info('Connecting to twitter api')
-        stream = twitter.TwitterStream(auth=self.auth)
+        stream = twitter.TwitterStream(auth=self.auth, timeout=5)
         logger.info('Tracking: %s' % ",".join(self.kw_track))
         iterator = stream.statuses.filter(track=",".join(self.kw_track))
 
         for tweet in iterator:
+
+            if tweet.get('timeout', False):
+                raise TwitterCollectorTimeoutException('Timeout')
+
             if not self.is_tweet_valid(tweet):
                 continue
 
@@ -64,22 +79,25 @@ class TwitterCollector(object):
             if not self.count % 100:
                 logger.info('Done with %d tweets out of %d' % (self.count, self.total_target))
 
-    def save(self,  tweet):
+    def save(self, tweet):
 
         row = models.TrainDataRaw()
         row.text = tweet['text']
         row.original = tweet
         row.polarity = self.polarity
         row.save()
+        logger.debug('Tweet %s saved', row.id)
         self.count += 1
 
 
     def is_tweet_valid(self, tweet):
 
         if not tweet or 'delete' in tweet:
+            logger.debug('Empty tweet - skipping')
             return False
 
         if not 'lang' in tweet or tweet['lang'] != 'en':
+            logger.debug('Non EN - skipping')
             return False
 
         if not 'text' in tweet or tweet['text'].startswith('RT'):
@@ -94,7 +112,6 @@ class TwitterCollector(object):
         return True
 
 
-kw = getattr(emoticons, args.what)
 polarity = {'sad': -1, 'happy': 1}.get(args.what)
 
 try:
