@@ -61,5 +61,11 @@ class SocketSession(mongoengine.Document):
         return hashlib.sha1(k).hexdigest()
 
 
+class TrainDataRaw(mongoengine.Document):
+    text = mongoengine.StringField(required=True, max_length=1024)
+    polarity = mongoengine.FloatField()
+    original = mongoengine.DictField()
+
+
 def connect(conf=config.mongo_db):
     mongoengine.connect(**conf)
