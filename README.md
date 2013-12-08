@@ -28,6 +28,22 @@ Testing
     python -m unittest discover tests
 
 
+Collecting raw Tweets
+---------------------
+The base of data training is an assumption that tweets with happy emoticons :) are positive and tweets
+with sad :( emoticons have negative sentiment polarity
+
+Wether this assumption is correct or not is outside the scope of this document.
+
+Collect 2000 'happy' tweets
+
+    python toolbox/collect-tweets.py happy 2000
+
+Collect 2000 'sad' tweets
+
+    python toolbox/collect-tweets.py sad 2000
+
+
 Training and testing corpora
 ----------------------------
 
