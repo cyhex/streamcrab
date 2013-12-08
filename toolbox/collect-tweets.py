@@ -1,13 +1,15 @@
 __author__ = 'gx'
-from smm import models
-from smm.classifier import emoticons
 import twitter
 import argparse
-
+import sys
+from smm import models
+from smm.classifier import emoticons
+from smm import config
+from smm.classifier.textprocessing import TwitterMixin
 
 import logging
-logger = logging.getLogger('collect-tweets')
 
+logger = logging.getLogger('collect-tweets')
 
 parser = argparse.ArgumentParser(description='Collect tweets', usage='python collect-tweets.py happy 1000')
 parser.add_argument('what', help='What to collect ( happy | sad )')
@@ -15,17 +17,22 @@ parser.add_argument('count', type=int, help='How much tweets to collect')
 args = parser.parse_args()
 
 
-
 #connect to db
 models.connect()
 
 
-class TwitterCollector(object):
+class TwitterCollectorException(Exception):
+    pass
 
-    def __init__(self, kw_track, total_target):
+
+class TwitterCollector(object):
+    def __init__(self, kw_track, polarity, total_target):
         self.kw_track = kw_track
         self.count = 0
         self.total_target = total_target
+        self.polarity = polarity
+        self.auth = twitter.OAuth(config.twitter_oauth_token, config.twitter_oauth_secret,
+                                  config.twitter_oauth_custkey, config.twitter_oauth_custsecret)
 
     def run(self):
         while True:
@@ -33,6 +40,11 @@ class TwitterCollector(object):
                 self.get_tweets()
             except twitter.TwitterHTTPError, e:
                 logger.info(e.message)
+            except TwitterCollectorException, e:
+                logger.info(e.message)
+                logger.info('Exit')
+                sys.exit(0)
+
 
     def get_tweets(self):
         logger.info('Connecting to twitter api')
@@ -44,27 +56,49 @@ class TwitterCollector(object):
             if not self.is_tweet_valid(tweet):
                 continue
 
-            row = models.TrainDataRaw()
-            row.text = tweet['text']
-            row.original = tweet
-            row.save()
-            self.count += 1
+            self.save(tweet)
+
+            if self.count >= self.total_target:
+                raise TwitterCollectorException('Done')
 
             if not self.count % 100:
                 logger.info('Done with %d tweets out of %d' % (self.count, self.total_target))
 
-    def is_tweet_valid(self, tweet):
-        if tweet and not 'delete' in tweet and 'lang' in tweet and tweet['lang'] == 'en' \
-            and 'text' in tweet and not tweet['text'].startswith('RE'):
+    def save(self,  tweet):
 
-            return True
-        else:
+        row = models.TrainDataRaw()
+        row.text = tweet['text']
+        row.original = tweet
+        row.polarity = self.polarity
+        row.save()
+        self.count += 1
+
+
+    def is_tweet_valid(self, tweet):
+
+        if not tweet or 'delete' in tweet:
             return False
 
+        if not 'lang' in tweet or tweet['lang'] != 'en':
+            return False
+
+        if not 'text' in tweet or tweet['text'].startswith('RT'):
+            logger.debug('RE-Tweet found - skipping')
+            return False
+
+        folded_text = TwitterMixin.word_map(tweet['text']).split()
+        if '__h__' in folded_text and '__s__' in folded_text:
+            logger.debug('Tweet with double emoicons found - skipping')
+            return False
+
+        return True
+
+
+kw = getattr(emoticons, args.what)
+polarity = {'sad': -1, 'happy': 1}.get(args.what)
 
 try:
-
-    c = TwitterCollector(getattr(emoticons, args.what), args.count)
+    c = TwitterCollector(getattr(emoticons, args.what), polarity, args.count)
     c.run()
 
 except (KeyboardInterrupt, SystemExit):
