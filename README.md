@@ -10,13 +10,13 @@ Full changelog and Docs will follow.
 
 
 Requirements
-............
+------------
 
 python2.7 python2.7-dev
 
 
 Installation
-............
+------------
 
 python setup.py develop
 python toolbox/setup-app.py
@@ -24,7 +24,7 @@ python toolbox/setup-app.py
 
 
 Training and testing corpora
-............................
+----------------------------
 
 
 http://mpqa.cs.pitt.edu/
