@@ -5,7 +5,6 @@ import re
 
 stopwords = corpus.stopwords.words('english')
 
-
 class SimpleProcessor():
     """
     Simple word tokenizer
@@ -113,7 +112,7 @@ class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
     """
     @classmethod
     def clean(cls, text):
-        text = text.lower().strip()
+        text = text.lower().strip().replace(',', ' ')
         text = cls.char_fold(text)
         text = cls.word_map(text)
         return text
@@ -121,6 +120,7 @@ class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
     @classmethod
     def getClassifierTokens(cls, text):
         text = cls.remove_urls(cls.clean(text))
+        text = cls.remove_usernames(text)
         return StopWordsProcessor.getClassifierTokens(text) - set(stopwords)
 
 
@@ -134,3 +134,10 @@ class StopPosTwitterProcessor(StopTwitterProcessor):
         text = cls.remove_urls(cls.clean(text))
         tokens = StopTwitterProcessor.getClassifierTokens(text)
         return set(pos_tag(list(tokens)))
+
+
+def feature_extractor(text):
+    # poor's man delayed import :)
+    from smm.config import classifier_tokenizer
+    return dict.fromkeys(classifier_tokenizer.getClassifierTokens(text), 1)
+

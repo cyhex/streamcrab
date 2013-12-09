@@ -3,7 +3,7 @@ import mongoengine
 import datetime
 import hashlib
 from smm import config
-
+from smm.classifier import labels
 
 class StreamSource(object):
     TWITTER = "twitter"
@@ -65,6 +65,22 @@ class TrainDataRaw(mongoengine.Document):
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
     original = mongoengine.DictField()
+
+    meta = {
+        'indexes': ['polarity'],
+    }
+
+    def get_label(self):
+        if self.polarity == -1:
+            return labels.negative
+        else:
+            return labels.positive
+
+
+class TrainedClassifiers(mongoengine.Document):
+    name = mongoengine.StringField(required=True, max_length=256, unique=True)
+    classifier = mongoengine.BinaryField()
+    stats = mongoengine.DictField()
 
 
 def connect(conf=config.mongo_db):

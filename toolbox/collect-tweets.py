@@ -8,12 +8,13 @@ from smm.classifier import emoticons
 from smm import config
 from smm.classifier.textprocessing import TwitterMixin
 
+
 import logging
 
 logger = logging.getLogger('collect-tweets')
 
 parser = argparse.ArgumentParser(description='Collect tweets', usage='python collect-tweets.py happy 1000')
-parser.add_argument('what', help='What to collect ( happy | sad )')
+parser.add_argument('what', help='What to collect', choices=['happy', 'sad'])
 parser.add_argument('count', type=int, help='How much tweets to collect')
 args = parser.parse_args()
 
