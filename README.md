@@ -3,10 +3,21 @@ Streamcrab
 
 Streamcrab is a quasi-realtime twitter sentiment analyzer
 
-This is the second version of the tool.
-Most obvious change - well it is re-written from scratch.
+This is the second version of the tool, and it is rewritten completely from previous version
+(still available in legacy branch)
 
-Full changelog and Docs will follow.
+Features and Changes from legacy version
+----------------------------------------
+
+- Switched to MaxEnt as default classifier
+- Simplified tweets collection (see `Collecting raw Tweets`)
+- Simplified trainer (see `Train classifier`)
+- Build in http server
+- Frontend included
+- Build in websocket server
+- Unittests tested
+- Utilization of multi-core systems
+- Scalable (in theory :)
 
 
 Requirements
@@ -24,6 +35,8 @@ Debian like systems:
 
 Checkout
 --------
+Checkout latest streamcrab branch from github
+
 
     git clone git@github.com:cyhex/streamcrab.git ./streamcrab
     cd streamcrab
@@ -31,18 +44,15 @@ Checkout
 
 Configure
 ---------
-
-copy smm/config.default.py to smm/config.py
+copy smm/config.default.py to smm/config.py and edit smm/config.py according to your needs
 
     cp smm/config.default.py smm/config.py
-
-Edit smm/config.py according to your needs
-
     nano smm/config.py
 
 
 Installation & Setup
 --------------------
+Download and install required libs and data
 
     python setup.py develop
     python toolbox/setup-app.py
@@ -51,6 +61,7 @@ Installation & Setup
 
 Testing
 -------
+Run unittests
 
     python -m unittest discover tests
 
@@ -70,24 +81,26 @@ Collect 2000 'sad' tweets
 
     python toolbox/collect-tweets.py sad 2000
 
-*for more options see
+for more options see
 
     python toolbox/collect-classifier.py --help
 
 
-Train collected raw tweets
---------------------------
+Train classifier
+----------------
+Create and save new classifier trained from collected tweets
 
     python toolbox/train-classifier.py maxEntTestCorpus 2000
 
-*for more options see
+for more options see
 
     python toolbox/train-classifier.py --help
 
 
 
-Show stats on raw Tweet collection and trained corpora
-------------------------------------------------------
+Show stats
+----------
+Show detailed info on collected Tweets and saved classifiers
 
     python toolbox/show-classifiers.py
 
