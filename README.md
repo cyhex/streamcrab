@@ -12,9 +12,7 @@ Features and Changes from legacy version
 - Switched to MaxEnt as default classifier
 - Simplified tweets collection (see `Collecting raw Tweets`)
 - Simplified trainer (see `Train classifier`)
-- Build in http server
-- Frontend included
-- Build in websocket server
+- Build in HTTP server & Frontend
 - Unittests tested
 - Utilization of multi-core systems
 - Scalable (in theory :)
