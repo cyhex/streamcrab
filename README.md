@@ -210,6 +210,7 @@ Test results for different Classifier/Tokenizer:
     Gold-B: 0.714
 
 According to the results i would suggest to stick to MaxentClassifier with StopTwitterProcessor
+
 TODO: Test BIG datasets (1M Tweets+)
 
 
@@ -217,8 +218,8 @@ TODO: Test BIG datasets (1M Tweets+)
 Links, Sources etc
 ------------------
 
-http://mpqa.cs.pitt.edu/
-http://nlp.stanford.edu/sentiment/index.html
-http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
-http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
+- http://mpqa.cs.pitt.edu/
+- http://nlp.stanford.edu/sentiment/index.html
+- http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
+- http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
 
