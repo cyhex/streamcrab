@@ -22,11 +22,11 @@ Debian like systems:
     apt-get install python2.7 python2.7-dev mongodb-server
 
 
-Installation
-------------
+Checkout
+--------
 
-    python setup.py develop
-    python toolbox/setup-app.py
+    git clone git@github.com:cyhex/streamcrab.git ./streamcrab
+    cd streamcrab
 
 
 Configure
@@ -39,6 +39,13 @@ copy smm/config.default.py to smm/config.py
 Edit smm/config.py according to your needs
 
     nano smm/config.py
+
+
+Installation & Setup
+--------------------
+
+    python setup.py develop
+    python toolbox/setup-app.py
 
 
 
@@ -62,6 +69,29 @@ Collect 2000 'happy' tweets
 Collect 2000 'sad' tweets
 
     python toolbox/collect-tweets.py sad 2000
+
+*for more options see
+
+    python toolbox/collect-classifier.py --help
+
+
+Train collected raw tweets
+--------------------------
+
+    python toolbox/train-classifier.py maxEntTestCorpus 2000
+
+*for more options see
+
+    python toolbox/train-classifier.py --help
+
+
+
+Show stats on raw Tweet collection and trained corpora
+------------------------------------------------------
+
+    python toolbox/show-classifiers.py
+
+
 
 
 Training and testing corpora
