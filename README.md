@@ -143,12 +143,33 @@ for more options see
     python toolbox/shell-classifier.py --help
 
 
-Training and testing corpora
+Training and testing results
 ----------------------------
+Tested against http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz  Task2
+twitter-test-GOLD-A.csv and twitter-test-GOLD-B.csv (ie Gold-A Gold-B) ca. 4000 tweets per file
+
+Test results for different Classifier/Tokenizer:
+
+    TrainedClassifier: maxEnt_20000
+    -------------------------------
+    ID: 52a5dbe2638dbf2aca991e0e
+    Date: 2013-12-09 15:04:02+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopTwitterProcessor
+    Sample_size : 40000
+    -------------------
+    Gold-A: 0.694
+    Gold-B: 0.748
 
 
-    http://mpqa.cs.pitt.edu/
-    http://nlp.stanford.edu/sentiment/index.html
-    http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
-    http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
+
+
+Links, Sources etc
+------------------
+
+http://mpqa.cs.pitt.edu/
+http://nlp.stanford.edu/sentiment/index.html
+http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
+http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
 
