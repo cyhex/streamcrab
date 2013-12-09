@@ -2,6 +2,8 @@ __author__ = 'gx'
 import mongoengine
 import datetime
 import hashlib
+import pickle
+
 from smm import config
 from smm.classifier import labels
 
@@ -76,11 +78,13 @@ class TrainDataRaw(mongoengine.Document):
         else:
             return labels.positive
 
-
 class TrainedClassifiers(mongoengine.Document):
     name = mongoengine.StringField(required=True, max_length=256, unique=True)
     classifier = mongoengine.BinaryField()
     stats = mongoengine.DictField()
+
+    def get_classifier_ins(self):
+        return pickle.loads(self.classifier)
 
 
 def connect(conf=config.mongo_db):

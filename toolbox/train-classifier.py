@@ -40,7 +40,6 @@ featureset += [(feature_extractor(row.text), labels.negative) for row in models.
 # min_ll - Log Likelihood drop Training iterations if min_ll > -0.02
 cls = nltk.MaxentClassifier.train(featureset, min_ll=args.cutoff)
 
-
 # Save
 row = models.TrainedClassifiers()
 row.name = args.name
