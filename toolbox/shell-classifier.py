@@ -39,5 +39,5 @@ try:
         cls.explain(feature_extractor(txt))
         print '\n'
 
-except (KeyboardInterrupt, SystemExit):
-    pass
+except (KeyboardInterrupt, SystemExit, EOFError):
+    print ' quiting...\n'
