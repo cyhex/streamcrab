@@ -1,10 +1,9 @@
 __author__ = 'gx'
-from nltk.classify.naivebayes import NaiveBayesClassifier
-
+from smm import config
 
 class ClassifierWorker(object):
 
-    def __init__(self, classifier=NaiveBayesClassifier, training_data=None):
+    def __init__(self, classifier=config.classifier_default, training_data=None):
         self.classifier = classifier
         self.training_data = training_data
 

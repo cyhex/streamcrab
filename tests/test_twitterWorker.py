@@ -22,7 +22,7 @@ class TestTwitterWorker(TestCaseDB):
         w.start()
 
         # sleep is needed in order to get at least couple of tweets
-        time.sleep(1)
+        time.sleep(2)
         kill.set()
         self.assertGreater(RawStreamQueue.objects.count(), 0)
 
