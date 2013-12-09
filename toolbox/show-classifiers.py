@@ -24,6 +24,9 @@ def print_trained_cls(row):
     for k,v in row.stats.items():
         print "%s : %s" % (k.capitalize(),v)
 
+    print "Training data size %0.2f (MB)" % (len(row.classifier)/1024.0/1024.0)
+
+
     print '\n'
 
 

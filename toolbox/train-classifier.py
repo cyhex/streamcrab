@@ -13,7 +13,8 @@ from smm import config
 parser = argparse.ArgumentParser(description='Classify collected raw tweets', usage='python train-classifier.py myClassifier 1000')
 parser.add_argument('name', help='Classifier name - must be unique')
 parser.add_argument('size', type=int, help='Corpus size - how much tweets to classify')
-parser.add_argument('-c','--cutoff', type=float, default=-0.02, required=False, help='Log Likelihood cutoff')
+parser.add_argument('-t', '--type', help='Classifier type', default='maxent')
+parser.add_argument('-c', '--cutoff', type=float, default=-0.02, required=False, help='Log Likelihood cutoff')
 args = parser.parse_args()
 
 models.connect()
@@ -36,9 +37,15 @@ if models.TrainedClassifiers.objects(name = args.name).count():
 featureset = [(feature_extractor(row.text), labels.positive) for row in models.TrainDataRaw.objects(polarity=1)[0:args.size]]
 featureset += [(feature_extractor(row.text), labels.negative) for row in models.TrainDataRaw.objects(polarity=-1)[0:args.size]]
 
-# Train
-# min_ll - Log Likelihood drop Training iterations if min_ll > -0.02
-cls = nltk.MaxentClassifier.train(featureset, min_ll=args.cutoff)
+if args.type == 'maxent':
+    # Train
+    # min_ll - Log Likelihood drop Training iterations if min_ll > -0.02
+    cls = nltk.MaxentClassifier.train(featureset, min_ll=args.cutoff)
+elif args.type == 'bayes':
+    cls = nltk.NaiveBayesClassifier.train(featureset)
+else:
+    print '%s is not valid classifier type' % args.type
+    sys.exit()
 
 # Save
 row = models.TrainedClassifiers()

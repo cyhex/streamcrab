@@ -9,7 +9,7 @@ This is the second version of the tool, and it is rewritten completely from prev
 Features and Changes from legacy version
 ----------------------------------------
 
-- Switched to MaxEnt as default classifier
+- Supports MaxEnt and Bayes classifiers (defaults to MaxEnt)
 - Simplified tweets collection (see `Collecting raw Tweets`)
 - Simplified trainer (see `Train classifier`)
 - Build in HTTP server & Frontend
@@ -102,6 +102,10 @@ Show detailed info on collected Tweets and saved classifiers
 
     python toolbox/show-classifiers.py
 
+Its worth mention that `Training data size` is the size of the trained classifier after it has been
+serialized (pickled) whit protocol=1 actual Memory Usage may vary...
+
+
 
 Interactive shell
 -----------------
@@ -158,10 +162,55 @@ Test results for different Classifier/Tokenizer:
     Classifier : MaxentClassifier
     Tokenizer : StopTwitterProcessor
     Sample_size : 40000
-    -------------------
+    Training data size 1.82 (MB)
+
     Gold-A: 0.694
     Gold-B: 0.748
 
+
+    TrainedClassifier: maxEnt_POS_20000
+    -----------------------------------
+    ID: 52a611ca638dbf34c3168f48
+    Date: 2013-12-09 18:54:02+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopPosTwitterProcessor
+    Sample_size : 40000
+    Training data size 2.69 (MB)
+
+    Gold-A: 0.676
+    Gold-B: 0.751
+
+
+    TrainedClassifier: bayes_20000
+    ------------------------------
+    ID: 52a61363638dbf35c63ea01e
+    Date: 2013-12-09 19:00:51+00:00
+    Cutoff : -0.02
+    Classifier : NaiveBayesClassifier
+    Tokenizer : StopTwitterProcessor
+    Sample_size : 40000
+    Training data size 10.93 (MB)
+
+    Gold-A: 0.684
+    Gold-B: 0.718
+
+
+    TrainedClassifier: bayes_POS_20000
+    ----------------------------------
+    ID: 52a6160b638dbf365cea35c3
+    Date: 2013-12-09 19:12:11+00:00
+    Cutoff : -0.02
+    Classifier : NaiveBayesClassifier
+    Tokenizer : StopPosTwitterProcessor
+    Sample_size : 40000
+    Training data size 13.76 (MB)
+
+    Gold-A: 0.681
+    Gold-B: 0.714
+
+According to the results i would suggest to stick to MaxentClassifier with StopTwitterProcessor
+TODO: Test BIG datasets (1M Tweets+)
 
 
 
