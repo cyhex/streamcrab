@@ -209,6 +209,23 @@ Test results for different Classifier/Tokenizer:
     Gold-A: 0.681
     Gold-B: 0.714
 
+
+    TrainedClassifier: maxEnt_100000
+    --------------------------------
+    ID: 52a71b3e638dbf0a0ec69ea7
+    Date: 2013-12-10 13:46:38+00:00
+    Cutoff : 0.001
+    Classifier : MaxentClassifier
+    Tokenizer : StopTwitterProcessor
+    Sample_size : 200000
+    Training data size 5.84 (MB)
+
+    Gold-A: 0.687
+    Gold-B: 0.766
+
+
+
+
 According to the results i would suggest to stick to MaxentClassifier with StopTwitterProcessor
 
 TODO: Test BIG datasets (1M Tweets+)
