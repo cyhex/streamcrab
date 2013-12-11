@@ -2,14 +2,20 @@ __author__ = 'gx'
 
 from flask import Flask, render_template, Response, request
 from smm import config
+from smm import models
 from socketio.namespace import BaseNamespace
 from socketio import socketio_manage
 import gevent
 import logging
 logger = logging.getLogger(__name__)
 
+
+gevent.monkey.patch_all()
+
 app = Flask(__name__, template_folder=config.server_templates, static_folder= config.server_static)
 app.debug = config.server_debug
+
+models.connect()
 
 @app.route('/')
 def index():
@@ -18,15 +24,15 @@ def index():
 
 class StreamNamespace(BaseNamespace):
 
-    def sendcpu(self):
-        prev = None
+    def fetch_stream(self):
         while True:
-            self.emit('cpu_data', self.data)
+            r = [c.to_json() for c in models.ClassifiedStream.find_tokens(self.track_kw)[0:1]]
+            self.emit('stream_update', r)
             gevent.sleep(1)
 
     def on_track(self, data):
-        self.data = data
-        self.spawn(self.sendcpu())
+        self.track_kw = data
+        self.spawn(self.fetch_stream())
 
 
 @app.route('/socket.io/<path:remaining>')

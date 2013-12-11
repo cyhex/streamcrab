@@ -11,11 +11,11 @@
   var stream = io.connect('/stream');
 
 
-  stream.on('cpu_data', function (data) {
+  stream.on('stream_update', function (data) {
     console.log(data);
   });
 
-  stream.emit('track','xxxx' + Math.random());
+  stream.emit('track',['google','twitter']);
 
 
 </script>

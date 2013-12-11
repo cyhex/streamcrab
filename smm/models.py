@@ -28,6 +28,15 @@ class ClassifiedStream(mongoengine.Document):
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
 
+    @classmethod
+    def find_tokens(cls, kw, from_id=None):
+        q = cls.objects(tokens__in=kw)
+        q = mongoengine.Q(tokens__in=kw)
+        if from_id:
+            q = q & mongoengine.Q(id__gt=from_id)
+
+        return cls.objects(q)[:25]
+
 
 class SocketSession(mongoengine.Document):
     meta = {
