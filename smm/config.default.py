@@ -1,7 +1,12 @@
 __author__ = 'gx'
 import logging
+import os
+import smm
+from smm.classifier.textprocessing import StopTwitterProcessor, StopPosTwitterProcessor
 
-############## MONGODB #############
+# MongoDB
+# ========
+
 # live db
 mongo_db = dict(db='smm', host='localhost', port=27017, is_slave=False, read_preference=False,
                 slaves=None, username=None, password=None)
@@ -12,7 +17,19 @@ test_mongo_db = dict(db='smm_test', host='localhost', port=27017, is_slave=False
                      slaves=None, username=None, password=None)
 
 
-############ TWITTER DataStream Plugin ############
+# Classifiers
+# =============
+
+# default tokenizer
+classifier="maxEnt_100000"
+classifier_tokenizer = StopTwitterProcessor
+classifier_pool_size = 4
+
+
+
+# TWITTER DataStream Plugin
+# =========================
+
 # collector, twitter auth
 twitter_oauth_token = ""
 twitter_oauth_secret = ""
@@ -26,7 +43,9 @@ twitter_http_error_sleep = 20
 twitter_kw_interval_check = 10
 
 
-### Logging ###
+
+# Logging
+# =======
 
 logfile_path = os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..','smm.log' ))
 # default logging to console

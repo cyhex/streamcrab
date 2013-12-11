@@ -13,5 +13,6 @@ setup(
         "twitter",
         "mongoengine",
         "nltk",
+        'numpy'
     ],
 )

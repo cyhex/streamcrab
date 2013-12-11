@@ -17,7 +17,9 @@ class TestWorkerPool(TestCaseDB):
 
         w = WorkerPool()
         w.start()
-        time.sleep(1)
+        while not RawStreamQueue.objects.count():
+            time.sleep(0.1)
+
         w.terminate()
 
         self.assertGreater(RawStreamQueue.objects.count(), 0)
