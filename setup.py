@@ -14,8 +14,8 @@ setup(
         "mongoengine",
         "nltk",
         'numpy',
-        'gevent',
         'gevent-socketio',
+	'gevent',
         'flask'
     ],
 )

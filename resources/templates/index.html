@@ -5,17 +5,23 @@
 </head>
 <body>
 
-<script src="/static/js/socket.io.min.js"></script>
+<div id="content"></div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="/static/js/socket.io.js"></script>
 
 <script>
+
+
   var stream = io.connect('/stream');
 
 
   stream.on('stream_update', function (data) {
     console.log(data);
+    $('#content').append('<p>' + data + '</p>');
   });
 
-  stream.emit('track',['google','twitter']);
+  stream.emit('track',['google']);
+
 
 
 </script>

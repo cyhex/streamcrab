@@ -4,6 +4,8 @@ import os
 import smm
 from smm.classifier.textprocessing import StopTwitterProcessor, StopPosTwitterProcessor
 
+basepath =  os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..'))
+
 # MongoDB
 # ========
 

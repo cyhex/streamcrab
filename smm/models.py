@@ -28,6 +28,14 @@ class ClassifiedStream(mongoengine.Document):
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
 
+    def dict(self):
+        return {
+           'text' : self.text,
+           'polarity' : self.polarity,
+           'tokens' : self.tokens,
+           'source' : self.source,
+        }
+
     @classmethod
     def find_tokens(cls, kw, from_id=None):
         q = cls.objects(tokens__in=kw)
