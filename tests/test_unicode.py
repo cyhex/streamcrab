@@ -18,5 +18,6 @@ class TestUnicode(TestCaseDB):
         r.text = unicode.encode(u'really be on google box \ud83d\ude02\ud83d\ude02\ud83d\ude02','utf-8')
         r.source = 't'
         r.save()
-        print r.text
+
+        print r.to_dict()
 

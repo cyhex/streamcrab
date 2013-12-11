@@ -27,7 +27,7 @@ class StreamNamespace(BaseNamespace):
     def fetch_stream(self):
         while True:
             for c in models.ClassifiedStream.find_tokens(self.track_kw)[0:5]:
-                self.emit('stream_update', c.dict())
+                self.emit('stream_update', c.to_dict())
 
             gevent.sleep(1)
 

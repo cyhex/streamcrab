@@ -11,13 +11,20 @@ class StreamSource(object):
     TWITTER = "twitter"
 
 
+class MongoEngineDictMx(object):
+
+    def to_dict(self):
+        d = self.to_mongo()
+        d['_id'] = str( d['_id'])
+        return d.to_dict()
+
 class RawStreamQueue(mongoengine.Document):
     text = mongoengine.StringField(required=True, max_length=1024)
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
 
 
-class ClassifiedStream(mongoengine.Document):
+class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
     meta = {
         'indexes': ['tokens'],
     }
@@ -27,14 +34,6 @@ class ClassifiedStream(mongoengine.Document):
     tokens = mongoengine.ListField(mongoengine.StringField(max_length=64))
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
-
-    def dict(self):
-        return {
-           'text' : self.text,
-           'polarity' : self.polarity,
-           'tokens' : self.tokens,
-           'source' : self.source,
-        }
 
     @classmethod
     def find_tokens(cls, kw, from_id=None):
