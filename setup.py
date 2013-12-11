@@ -13,6 +13,9 @@ setup(
         "twitter",
         "mongoengine",
         "nltk",
-        'numpy'
+        'numpy',
+        'gevent',
+        'gevent-socketio',
+        'flask'
     ],
 )

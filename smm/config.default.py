@@ -42,6 +42,13 @@ twitter_http_error_sleep = 20
 #how often should we check for changed keywords
 twitter_kw_interval_check = 10
 
+# Server Flask & socketio
+# =======================
+server_templates = os.path.join(basepath, 'resources', 'templates')
+server_static = os.path.join(basepath, 'resources', 'static')
+server_debug = True
+
+server_socketio_handlers = ['websocket', 'xhr-polling', 'xhr-multipart', 'jsonp-polling']
 
 
 # Logging

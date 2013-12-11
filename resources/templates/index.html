@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello</title>
+</head>
+<body>
+
+<script src="/static/js/socket.io.min.js"></script>
+
+<script>
+  var stream = io.connect('/stream');
+
+
+  stream.on('cpu_data', function (data) {
+    console.log(data);
+  });
+
+  stream.emit('track','xxxx' + Math.random());
+
+
+</script>
+
+</body>
+</html>
