@@ -6,7 +6,7 @@ Streamcrab is a quasi-realtime twitter sentiment analyzer
 This is the second version of the tool, and it is rewritten completely from previous version
 (still available in legacy branch)
 
-Features and Changes from legacy version
+Features and Changes from previous version
 ----------------------------------------
 
 - Supports MaxEnt and Bayes classifiers (defaults to MaxEnt)
