@@ -16,6 +16,8 @@ class MongoEngineDictMx(object):
     def to_dict(self):
         d = self.to_mongo()
         d['_id'] = str( d['_id'])
+        mongoengine.ObjectIdField
+        d['stamp'] = self.id.generation_time.isoformat()
         return d.to_dict()
 
 class RawStreamQueue(mongoengine.Document):
@@ -37,7 +39,6 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     @classmethod
     def find_tokens(cls, kw, from_id=None):
-        q = cls.objects(tokens__in=kw)
         q = mongoengine.Q(tokens__in=kw)
         if from_id:
             q = q & mongoengine.Q(id__gt=from_id)

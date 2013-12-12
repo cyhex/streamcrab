@@ -16,8 +16,7 @@
 
 
   stream.on('stream_update', function (data) {
-    console.log(data);
-    $('#content').append('<p>' + data + '</p>');
+    $('#content').append('<p>' + data.polarity + ' : '+ data.text + '</p>');
   });
 
   stream.emit('track',['google']);
