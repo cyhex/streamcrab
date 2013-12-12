@@ -6,7 +6,7 @@ from smm.server import app
 
 monkey.patch_all()
 
-SocketIOServer(('', 5000), app, resource="socket.io",
+SocketIOServer(('', 5000), app, namespace="socket.io",
                transports=config.server_socketio_handlers,
                policy_server=False
 ).serve_forever()

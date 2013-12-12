@@ -35,7 +35,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
-    tokens = mongoengine.ListField(mongoengine.StringField(max_length=64))
+    tokens = mongoengine.ListField(mongoengine.StringField(max_length=256))
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
 
@@ -46,7 +46,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
             d = datetime.datetime.now() - datetime.timedelta(seconds=cls.TTL)
             from_id = ObjectId.from_datetime(d)
 
-        q = mongoengine.Q(tokens__in=kw) & mongoengine.Q(id__gt=from_id)
+        q = mongoengine.Q(tokens__all=kw) & mongoengine.Q(id__gt=from_id)
 
         return cls.objects(q)[:25]
 

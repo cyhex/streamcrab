@@ -56,7 +56,7 @@ server_socketio_handlers = ['websocket', 'xhr-polling', 'xhr-multipart', 'jsonp-
 # Logging
 # =======
 
-logfile_path = os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..','smm.log' ))
+logfile_path = os.path.join(basepath, 'smm.log')
 # default logging to console
 logging.basicConfig(level=logging.DEBUG, format='%(name)s: %(levelname)s %(message)s')
 
