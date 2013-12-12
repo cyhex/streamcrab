@@ -226,10 +226,13 @@ Test results for different Classifier/Tokenizer:
 
 
 
-According to the results i would suggest to stick to MaxentClassifier with StopTwitterProcessor
+Todo
+----
 
-TODO: Test BIG datasets (1M Tweets+)
-
+- Test accuracy of BIG datasets (1M Tweets+)
+- Test accuracy with ngrams
+- Implement queue.full() check in smm.classifier.pool.QueueFeeder
+- Implement KeyboardInterrupt, SystemExit in start-server.py
 
 
 Links, Sources etc

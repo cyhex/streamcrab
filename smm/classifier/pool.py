@@ -9,14 +9,13 @@ from smm.models import RawStreamQueue, TrainedClassifiers
 
 import logging
 
-class QueueFeeder(Process):
 
+class QueueFeeder(Process):
     def __init__(self, queue, stop):
         self.queue = queue
         self.stop = stop
         super(QueueFeeder, self).__init__()
         self.logger = logging.getLogger(self.name)
-
 
     def run(self):
         try:
@@ -40,7 +39,6 @@ class QueueFeeder(Process):
 
 
 class ClassifierWorkerPool(object):
-
     def __init__(self):
         self.queue = Queue(100)
         self.workers = []
