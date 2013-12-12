@@ -1,5 +1,6 @@
 __author__ = 'gx'
 import mongoengine
+from bson import ObjectId
 import datetime
 import hashlib
 import pickle
@@ -16,7 +17,6 @@ class MongoEngineDictMx(object):
     def to_dict(self):
         d = self.to_mongo()
         d['_id'] = str( d['_id'])
-        mongoengine.ObjectIdField
         d['stamp'] = self.id.generation_time.isoformat()
         return d.to_dict()
 
@@ -31,6 +31,8 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
         'indexes': ['tokens'],
     }
 
+    TTL = 86400
+
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
     tokens = mongoengine.ListField(mongoengine.StringField(max_length=64))
@@ -39,9 +41,12 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     @classmethod
     def find_tokens(cls, kw, from_id=None):
-        q = mongoengine.Q(tokens__in=kw)
-        if from_id:
-            q = q & mongoengine.Q(id__gt=from_id)
+
+        if not from_id:
+            d = datetime.datetime.now() - datetime.timedelta(seconds=cls.TTL)
+            from_id = ObjectId.from_datetime(d)
+
+        q = mongoengine.Q(tokens__in=kw) & mongoengine.Q(id__gt=from_id)
 
         return cls.objects(q)[:25]
 
