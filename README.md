@@ -6,13 +6,13 @@ Streamcrab is a quasi-realtime twitter sentiment analyzer
 This is the second version of the tool, and it is rewritten completely from previous version
 (still available in legacy branch)
 
-Features and Changes from previous version
-----------------------------------------
+Changes from previous version
+-----------------------------
 
 - Supports MaxEnt and Bayes classifiers (defaults to MaxEnt)
 - Simplified tweets collection (see `Collecting raw Tweets`)
 - Simplified trainer (see `Train classifier`)
-- Build in HTTP server & Frontend (gevent, gevent-socketio, Flask)
+- Build in HTTP server & Frontend based on gevent and Flask
 - Unittests tested
 - Utilization of multi-core systems
 - Scalable (in theory :)
