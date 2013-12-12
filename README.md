@@ -12,7 +12,7 @@ Changes from previous version
 - Supports MaxEnt and Bayes classifiers (defaults to MaxEnt)
 - Simplified tweets collection (see `Collecting raw Tweets`)
 - Simplified trainer (see `Train classifier`)
-- Build in HTTP server & Frontend based on gevent and Flask
+- Build in HTTP Server & frontend based on gevent and Flask
 - Unittests tested
 - Utilization of multi-core systems
 - Scalable (in theory :)
