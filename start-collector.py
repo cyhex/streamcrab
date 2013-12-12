@@ -14,7 +14,7 @@ models.connect()
 
 s = models.SocketSession()
 s.ip='x'
-s.keywords = ['google']
+s.keywords = ['google','android']
 s.save()
 
 # init pool
