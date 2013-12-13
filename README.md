@@ -232,7 +232,6 @@ Todo
 - Test accuracy of BIG datasets (1M Tweets+)
 - Test accuracy with ngrams
 - Implement queue.full() check in smm.classifier.pool.QueueFeeder
-- Implement KeyboardInterrupt, SystemExit in start-server.py
 
 
 Links, Sources etc
