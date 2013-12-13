@@ -12,11 +12,6 @@ logger = logging.getLogger('start-collector')
 #connect to db
 models.connect()
 
-s = models.SocketSession()
-s.ip='x'
-s.keywords = ['google','android']
-s.save()
-
 # init pool
 pool = WorkerPool()
 

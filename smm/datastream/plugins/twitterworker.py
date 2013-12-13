@@ -59,15 +59,12 @@ class TwitterWorker(DataStreamAbstract):
                 logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
                 time.sleep(config.twitter_http_error_sleep)
 
-            except TwitterWorkerTimeout, e:
-                logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
-                time.sleep(config.twitter_http_error_sleep)
-
             except TwitterWorkerTerminate:
                 logger.info("Terminated")
                 return None
 
     def get_tweets(self):
+        self.check_keywords()
 
         if not self.kw_track:
             raise TwitterWorkerKwEmpty('keywords are empty')
@@ -81,7 +78,7 @@ class TwitterWorker(DataStreamAbstract):
                 raise TwitterWorkerTerminate()
 
             if tweet.get('timeout',False):
-                raise TwitterWorkerTimeout('Timeout')
+                time.sleep(config.twitter_http_error_sleep)
 
             self.check_keywords()
             self.save(tweet)

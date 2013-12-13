@@ -4,7 +4,8 @@
     <title>Hello</title>
 </head>
 <body>
-
+<input id="keyords" type="text">
+<button id="track">track</button>
 <div id="content"></div>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/static/js/socket.io.js"></script>
@@ -19,8 +20,12 @@
     $('#content').append('<p>' + data.polarity + ' : '+ data.text + '</p>');
   });
 
-  stream.emit('track',['google','android']);
+  $('#track').click(function(){
+    $('#content').html('');
+    stream.emit('track',$('#keyords').val());
+  });
 
+  setInterval(function(){stream.emit('ping')},2000);
 
 
 </script>

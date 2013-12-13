@@ -7,15 +7,16 @@ from socketio.namespace import BaseNamespace
 from socketio import socketio_manage
 import gevent
 import logging
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 gevent.monkey.patch_all()
 
-app = Flask(__name__, template_folder=config.server_templates, static_folder= config.server_static)
+app = Flask(__name__, template_folder=config.server_templates, static_folder=config.server_static)
 app.debug = config.server_debug
 
 models.connect()
+
 
 @app.route('/')
 def index():
@@ -23,19 +24,45 @@ def index():
 
 
 class StreamNamespace(BaseNamespace):
+    def __init__(self, *args, **kwargs):
+        super(StreamNamespace, self).__init__(*args, **kwargs)
+        self.tokenizer = config.classifier_tokenizer
+        self.logger = logging.getLogger(self.__class__.__name__)
 
-    def fetch_stream(self):
-        self.last_id = None
-        while True:
-            for c in models.ClassifiedStream.find_tokens(self.track_kw, self.last_id):
-                self.emit('stream_update', c.to_dict())
-                self.last_id = c.id
+    def recv_connect(self):
+        self.logger.debug('Connect from %s', str(self.socket))
+        self.socket_session = models.SocketSession()
+        self.socket_session.ip = self.environ.get('REMOTE_ADDR')
+        self.socket_session.save()
 
-            gevent.sleep(1)
+    def on_track(self, track):
+        self.logger.debug('Track %s', track)
+        self.socket_session.keywords = list(self.tokenizer.getSearchTokens(track))
+        self.socket_session.save()
 
-    def on_track(self, data):
-        self.track_kw = data
-        self.spawn(self.fetch_stream())
+        def fetch_stream():
+            self.last_id = None
+            while True:
+                for c in models.ClassifiedStream.find_tokens(self.socket_session.keywords, self.last_id):
+                    self.emit('stream_update', c.to_dict())
+                    self.last_id = c.id
+
+                gevent.sleep(1)
+
+        self.spawn(fetch_stream)
+
+        return True
+
+    def on_ping(self):
+        self.logger.debug('Ping from %s', str(self.socket))
+        if hasattr(self, 'socket_session'):
+            self.socket_session.ping()
+        return True
+
+    def recv_disconnect(self):
+        self.logger.debug('Disconnect from %s', str(self.socket))
+        self.socket_session.delete()
+        self.disconnect()
 
 
 @app.route('/socket.io/<path:remaining>')
