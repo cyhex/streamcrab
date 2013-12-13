@@ -13,20 +13,18 @@
 <script>
 
 
-  var stream = io.connect('/stream');
+    var stream = io.connect('/stream');
 
-
-  stream.on('stream_update', function (data) {
+    stream.on('stream_update', function (data) {
     $('#content').append('<p>' + data.polarity + ' : '+ data.text + '</p>');
-  });
+    });
 
-  $('#track').click(function(){
+    $('#track').click(function(){
     $('#content').html('');
     stream.emit('track',$('#keyords').val());
-  });
+    });
 
-  setInterval(function(){stream.emit('ping')},2000);
-
+    setInterval(function(){stream.emit('ping')},2000);
 
 </script>
 

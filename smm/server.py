@@ -51,18 +51,10 @@ class StreamNamespace(BaseNamespace):
 
         self.spawn(fetch_stream)
 
-        return True
-
     def on_ping(self):
         self.logger.debug('Ping from %s', str(self.socket))
         if hasattr(self, 'socket_session'):
             self.socket_session.ping()
-        return True
-
-    def recv_disconnect(self):
-        self.logger.debug('Disconnect from %s', str(self.socket))
-        self.socket_session.delete()
-        self.disconnect()
 
 
 @app.route('/socket.io/<path:remaining>')
