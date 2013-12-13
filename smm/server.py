@@ -36,9 +36,13 @@ class StreamNamespace(BaseNamespace):
         self.socket_session.save()
 
     def on_track(self, track):
-        self.logger.debug('Track %s', track)
+        tokens = list(self.tokenizer.getSearchTokens(track))
+        if not tokens:
+            return True
+
         self.socket_session.keywords = list(self.tokenizer.getSearchTokens(track))
         self.socket_session.save()
+        self.logger.debug('Track %s from %s', tokens, str(self.socket))
 
         def fetch_stream():
             self.last_id = None
