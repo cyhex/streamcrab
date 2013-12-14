@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/static/js/socket.io.js"></script>
     <title>Hello</title>
 </head>
 <body>
 <input id="keyords" type="text">
 <button id="track">track</button>
+<div id="graph"></div>
 <div id="content"></div>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="/static/js/socket.io.js"></script>
+
+
 
 <script>
 
@@ -25,6 +28,7 @@
     });
 
     setInterval(function(){stream.emit('ping')},2000);
+
 
 </script>
 
