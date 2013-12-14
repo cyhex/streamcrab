@@ -44,6 +44,6 @@ for l in f.readlines():
 
 
 row  = models.TrainedClassifiers.objects(name=args.name).first()
-cls = row.get_classifier_ins()
+cls = row.get_classifier()
 
 print nltk.classify.accuracy(cls, gold)

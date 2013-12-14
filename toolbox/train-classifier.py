@@ -4,7 +4,6 @@
 __author__ = 'gx'
 
 import nltk
-import pickle
 import argparse
 import argcomplete
 import sys
@@ -14,7 +13,6 @@ from smm.classifier.textprocessing import feature_extractor, TwitterMixin
 from smm import models
 from smm.classifier import labels
 from smm import config
-import io
 
 parser = argparse.ArgumentParser(description='Classify collected raw tweets', usage='python train-classifier.py myClassifier 1000')
 parser.add_argument('name', help='Classifier name - must be unique')
@@ -88,7 +86,7 @@ else:
 # Save
 row = models.TrainedClassifiers()
 row.name = args.name
-row.classifier = pickle.dumps(cls, 1)
+row.set_classifier(cls)
 row.stats = dict(
     classifier=cls.__class__.__name__,
     tokenizer=config.classifier_tokenizer.__name__,

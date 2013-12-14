@@ -4,6 +4,7 @@ from bson import ObjectId
 import datetime
 import hashlib
 import pickle
+import StringIO
 
 from smm import config
 from smm.classifier import labels
@@ -102,11 +103,15 @@ class TrainDataRaw(mongoengine.Document):
 
 class TrainedClassifiers(mongoengine.Document):
     name = mongoengine.StringField(required=True, max_length=256, unique=True)
-    classifier = mongoengine.BinaryField()
+    classifier = mongoengine.FileField()
     stats = mongoengine.DictField()
 
-    def get_classifier_ins(self):
-        return pickle.loads(self.classifier)
+    def set_classifier(self, classifier):
+        s = StringIO.StringIO(pickle.dumps(classifier))
+        self.classifier.put(s)
+
+    def get_classifier(self):
+        return pickle.loads(self.classifier.read())
 
 
 def connect(conf=config.mongo_db):

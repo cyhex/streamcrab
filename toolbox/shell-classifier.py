@@ -25,7 +25,7 @@ if not models.TrainedClassifiers.objects(name=args.name).count():
     sys.exit()
 
 row = models.TrainedClassifiers.objects(name=args.name).first()
-cls = row.get_classifier_ins()
+cls = row.get_classifier()
 print "exit: ctrl+c \n"
 print "Loaded %s" % row.name
 

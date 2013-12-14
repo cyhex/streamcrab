@@ -47,7 +47,7 @@ class ClassifierWorkerPool(object):
         self.queue_feeder = QueueFeeder(self.queue, self.stop)
 
         row = TrainedClassifiers.objects(name=config.classifier).first()
-        self.trained_classifier = row.get_classifier_ins()
+        self.trained_classifier = row.get_classifier()
 
     def start(self):
         self.queue_feeder.start()
