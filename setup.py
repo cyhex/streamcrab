@@ -15,7 +15,8 @@ setup(
         "nltk",
         'numpy',
         'gevent-socketio',
-	'gevent',
-        'flask'
+	    'gevent',
+        'flask',
+        'argcomplete'
     ],
 )

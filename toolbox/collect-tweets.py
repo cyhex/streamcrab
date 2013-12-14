@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
 __author__ = 'gx'
 import twitter
 import argparse
+import argcomplete
 import sys
 import time
 from smm import models
@@ -18,6 +22,7 @@ parser.add_argument('what', help='What to collect', choices=['happy', 'sad'])
 parser.add_argument('count', type=int, help='How much tweets to collect')
 args = parser.parse_args()
 
+argcomplete.autocomplete(parser)
 
 #connect to db
 models.connect()

@@ -14,11 +14,11 @@ class TestSimpleProcessor(TestCase):
         self.assertEqual(expect, result)
 
     def test_getSearchTokens(self):
-        result = SimpleProcessor.getSearchTokens(self.text)
-        expect = set("hello my name is timor".split())
+        result = SimpleProcessor.getSearchTokens(SimpleProcessor.clean(self.text))
+        expect = "hello my name is timor".split()
         self.assertEqual(expect, result)
 
     def test_getClassifierTokens(self):
-        result = SimpleProcessor.getClassifierTokens(self.text)
-        expect = set("hello my name is timor".split())
+        result = SimpleProcessor.getClassifierTokens(SimpleProcessor.clean(self.text))
+        expect = "hello my name is timor".split()
         self.assertEqual(expect, result)

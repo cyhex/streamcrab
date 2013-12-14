@@ -10,6 +10,7 @@ class TestStopPosTwitterProcessor(TestCase):
 
     def test_getClassifierTokens(self):
         result = StopPosTwitterProcessor.getClassifierTokens(self.text)
-        expect = set([('__not__', 'NNP'), ('__h__', 'NNP'), ('?', '.'), ('hi', 'NN'), ('name', 'NN'),
-                      ('whats', 'NNS'), ('__', 'NNP'), ('#hastag', 'NNP'), ('timor', 'NN')])
+        expect = [('hi', 'NN'), ('__h__', 'NNP'), ('whats', 'NNS'), ('?', '.'), ('name', 'NN'), ('__', 'NNP'),
+                  ('__not__', 'NNP'), ('__', 'NNP'), ('timor', 'NN'), ('#hastag', '-NONE-')]
+
         self.assertEqual(expect, result)

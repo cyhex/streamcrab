@@ -1,6 +1,7 @@
 from nltk import pos_tag
 from nltk import corpus
 from smm.classifier import emoticons
+from smm.classifier.ngrams import bigrams
 import re
 
 stopwords = corpus.stopwords.words('english')
@@ -9,32 +10,30 @@ class SimpleProcessor():
     """
     Simple word tokenizer
     """
-
     @classmethod
     def clean(cls, text):
+        text = text.replace(',', ' ')
         return text.strip().lower()
 
     @classmethod
     def getSearchTokens(cls, text):
-        return set(cls.clean(text).split())
+        return text.split()
 
     @classmethod
     def getClassifierTokens(cls, text):
-        return set(cls.clean(text).split())
+        return text.split()
 
 
-class StopWordsProcessor(SimpleProcessor):
-    """
-    Simple word tokenizer with stopwords filtering
-    """
+class StopWordsMixin():
 
     @classmethod
-    def getSearchTokens(cls, text):
-        return SimpleProcessor.getSearchTokens(cls.clean(text)) - set(stopwords)
+    def remove_stop_words(self, tokens):
+        for t in tokens[:]:
+            if t in stopwords:
+                tokens.remove(t)
 
-    @classmethod
-    def getClassifierTokens(cls, text):
-        return SimpleProcessor.getSearchTokens(cls.clean(text)) - set(stopwords)
+        return tokens
+
 
 
 class TwitterMixin(object):
@@ -106,23 +105,62 @@ class TwitterMixin(object):
         return text
 
 
-class StopTwitterProcessor(StopWordsProcessor, TwitterMixin):
+
+class StopWordsProcessor(SimpleProcessor, StopWordsMixin):
+    """
+    Simple word tokenizer with stopwords filtering
+    """
+
+    @classmethod
+    def getSearchTokens(cls, text):
+        text = cls.clean(text)
+        tokes = SimpleProcessor.getSearchTokens(text)
+        tokes = cls.remove_stop_words(tokes)
+        return tokes
+
+    @classmethod
+    def getClassifierTokens(cls, text):
+        text = cls.clean(text)
+        tokes = SimpleProcessor.getClassifierTokens(text)
+        tokes = cls.remove_stop_words(tokes)
+        return tokes
+
+class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
     """
     stop words, TwitterMixin
     """
     @classmethod
     def clean(cls, text):
-        text = text.lower().strip().replace(',', ' ')
+        text = SimpleProcessor.clean(text)
         text = cls.char_fold(text)
         text = cls.word_map(text)
         return text
 
     @classmethod
     def getClassifierTokens(cls, text):
-        text = cls.remove_urls(cls.clean(text))
+        text = cls.clean(text)
+        text = cls.remove_urls(text)
         text = cls.remove_usernames(text)
-        return StopWordsProcessor.getClassifierTokens(text) - set(stopwords)
+        tokes = SimpleProcessor.getClassifierTokens(text)
+        tokes = cls.remove_stop_words(tokes)
+        return tokes
 
+    @classmethod
+    def getSearchTokens(cls, text):
+        text = cls.clean(text)
+        tokes = SimpleProcessor.getSearchTokens(text)
+        tokes = cls.remove_stop_words(tokes)
+        return tokes
+
+
+class StopBigramTwitterProcessor(StopTwitterProcessor):
+    """
+    StopTwitterProcessor, Bigrams
+    """
+    @classmethod
+    def getClassifierTokens(cls, text):
+        tokens = StopTwitterProcessor.getClassifierTokens(text)
+        return bigrams(tokens)
 
 
 class StopPosTwitterProcessor(StopTwitterProcessor):
@@ -133,7 +171,7 @@ class StopPosTwitterProcessor(StopTwitterProcessor):
     def getClassifierTokens(cls, text):
         text = cls.remove_urls(cls.clean(text))
         tokens = StopTwitterProcessor.getClassifierTokens(text)
-        return set(pos_tag(list(tokens)))
+        return pos_tag(tokens)
 
 
 def feature_extractor(text):

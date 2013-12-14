@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+
 __author__ = 'gx'
 
 import argparse
+import argcomplete
 import sys
 import io
 import nltk
@@ -15,6 +19,8 @@ parser = argparse.ArgumentParser(description='Test accuracy of Trained data',
 parser.add_argument('name', help='Classifier name')
 parser.add_argument('src', help='Data source name ')
 args = parser.parse_args()
+
+argcomplete.autocomplete(parser)
 
 models.connect()
 
