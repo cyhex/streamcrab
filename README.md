@@ -149,7 +149,7 @@ for more options see
 
 Training and testing results
 ----------------------------
-see :
+see : https://github.com/cyhex/streamcrab/blob/master/docs/acurracy_tests.md
 
 
 Todo
