@@ -1,15 +1,18 @@
 from nltk import pos_tag
 from nltk import corpus
+from nltk import PorterStemmer
 from smm.classifier import emoticons
 from smm.classifier.ngrams import bigrams
 import re
 
 stopwords = corpus.stopwords.words('english')
 
+
 class SimpleProcessor():
     """
     Simple word tokenizer
     """
+
     @classmethod
     def clean(cls, text):
         text = text.replace(',', ' ')
@@ -25,7 +28,6 @@ class SimpleProcessor():
 
 
 class StopWordsMixin():
-
     @classmethod
     def remove_stop_words(self, tokens):
         for t in tokens[:]:
@@ -33,7 +35,6 @@ class StopWordsMixin():
                 tokens.remove(t)
 
         return tokens
-
 
 
 class TwitterMixin(object):
@@ -100,10 +101,9 @@ class TwitterMixin(object):
         """
         for label, items in cls._mapping.items():
             for item in items:
-                text = text.replace(item ," %s " % label)
+                text = text.replace(item, " %s " % label)
 
         return text
-
 
 
 class StopWordsProcessor(SimpleProcessor, StopWordsMixin):
@@ -125,16 +125,18 @@ class StopWordsProcessor(SimpleProcessor, StopWordsMixin):
         tokes = cls.remove_stop_words(tokes)
         return tokes
 
+
 class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
     """
     stop words, TwitterMixin
     """
+
     @classmethod
     def clean(cls, text):
         text = SimpleProcessor.clean(text)
         text = cls.char_fold(text)
         text = cls.word_map(text)
-        return text
+        return text.strip()
 
     @classmethod
     def getClassifierTokens(cls, text):
@@ -153,10 +155,40 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
         return tokes
 
 
+class StopStemmTwitterProcessor(StopTwitterProcessor):
+    """
+    StopTwitterProcessor, Stemmer
+    """
+
+
+    @classmethod
+    def getClassifierTokens(cls, text):
+        stemmer = PorterStemmer()
+
+        tokens = StopTwitterProcessor.getClassifierTokens(text)
+        for i,t in enumerate(tokens):
+            tokens[i] = stemmer.stem(t)
+
+        return tokens
+
+
+class StopPosTwitterProcessor(StopTwitterProcessor):
+    """
+    Stop words, TwitterMixin, POS
+    """
+
+    @classmethod
+    def getClassifierTokens(cls, text):
+        text = cls.remove_urls(cls.clean(text))
+        tokens = StopTwitterProcessor.getClassifierTokens(text)
+        return pos_tag(tokens)
+
+
 class StopBigramTwitterProcessor(StopTwitterProcessor):
     """
     StopTwitterProcessor, Bigrams
     """
+
     @classmethod
     def getClassifierTokens(cls, text):
         tokens = StopTwitterProcessor.getClassifierTokens(text)
@@ -167,6 +199,7 @@ class StopPosTwitterProcessor(StopTwitterProcessor):
     """
     Stop words, TwitterMixin, POS
     """
+
     @classmethod
     def getClassifierTokens(cls, text):
         text = cls.remove_urls(cls.clean(text))
@@ -177,5 +210,5 @@ class StopPosTwitterProcessor(StopTwitterProcessor):
 def feature_extractor(text):
     # poor's man delayed import :)
     from smm.config import classifier_tokenizer
-    return dict.fromkeys(classifier_tokenizer.getClassifierTokens(text), 1)
 
+    return dict.fromkeys(classifier_tokenizer.getClassifierTokens(text), 1)

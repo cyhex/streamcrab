@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="/static/css/nv.d3.css" rel="stylesheet" type="text/css">
+    
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="/static/js/socket.io.js"></script>
+    
+    <script src="/static/js/d3.v3.js"></script>
+    <script src="/static/js/nv.d3.min.js"></script>
+    
+
+    
+    
     <title>Hello</title>
+    
+    
 </head>
 <body>
 <input id="keyords" type="text">
 <button id="track">track</button>
-<div id="graph"></div>
+
+
+<div id="chart" style="width: 100%">
+    <svg style="width: 100%; height: 400px"></svg>
+</div>
+
 <div id="content"></div>
 
 
@@ -28,8 +44,53 @@
     });
 
     setInterval(function(){stream.emit('ping')},2000);
+    
+    
+    chart = nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+                  .showDistX(true)
+                  .showDistY(true)
+                  .color(d3.scale.category10().range());
 
+    chart.xAxis.tickFormat(d3.format('.02f'));
+    chart.yAxis.tickFormat(d3.format('.02f'));
 
+    
+    d3.select('#chart svg')
+        .datum(data(4,40))
+      .transition().duration(500)
+      .call(chart);
+
+     
+   function redraw() {
+        d3.select('#chart svg').datum(data(4,40)).transition().duration(500).call(chart);
+    }
+   setInterval(function(){redraw()},2000);  
+     
+   nv.utils.windowResize(chart.update);
+   return chart;
+        
+   });
+   
+    
+    
+   function data(groups, points){
+        var data = [];
+        
+        data.push({key:'XXX',values:[]});
+        for (j = 0; j < points; j++) {
+            data[0].values.push({
+              x: Math.random(), 
+              y: Math.random(), 
+              size: Math.random()
+            });
+          }
+        return data;
+   }
+   
+   
+   
+    
 </script>
 
 </body>

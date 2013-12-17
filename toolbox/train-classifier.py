@@ -8,6 +8,7 @@ import argparse
 import argcomplete
 import sys
 import io
+import mongoengine
 
 from smm.classifier.textprocessing import feature_extractor, TwitterMixin
 from smm import models
@@ -41,6 +42,9 @@ if not args.source and models.TrainedClassifiers.objects(name = args.name).count
     sys.exit()
 
 
+def apply_features(row):
+    return (feature_extractor(row.text), row.get_label())
+
 # TODO: move to parsers
 if args.source:
     featureset = []
@@ -70,8 +74,11 @@ if args.source:
 
 else:
 
-    featureset = [(feature_extractor(row.text), labels.positive) for row in models.TrainDataRaw.objects(polarity=1)[0:args.size]]
-    featureset += [(feature_extractor(row.text), labels.negative) for row in models.TrainDataRaw.objects(polarity=-1)[0:args.size]]
+
+    #featureset = nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=1)[0:args.size])
+    #featureset += nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=-1)[0:args.size])
+    featureset = [(feature_extractor(row.text), labels.positive) for row in models.TrainDataRaw.objects(polarity=1).timeout(False)[0:args.size]]
+    featureset += [(feature_extractor(row.text), labels.negative) for row in models.TrainDataRaw.objects(polarity=-1).timeout(False)[0:args.size]]
 
 if args.type == 'maxent':
     # Train
@@ -100,11 +107,3 @@ row.save()
 print "TrainedClassifier saved with ID: %s  Name: %s" % (row.id, row.name)
 
 
-# if date size is to big to fit into your ram try to use nltk.apply_features
-# --------------------------------------------------------------------------
-#
-# def apply_features(row):
-#   return (feature_extractor(row.text), row.get_label())
-#
-# featureset = nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=1)[0:15])
-# featureset += nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=-1)[0:15])

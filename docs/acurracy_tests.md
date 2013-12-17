@@ -107,3 +107,66 @@ Test results for different Classifier/Tokenizer:
 
     Gold-A: 0.662
     Gold-B: 0.625
+
+
+    TrainedClassifier: maxent_100000
+    --------------------------------
+    ID: 52ac7369638dbf56dc3dc10f
+    Date: 2013-12-14 15:04:09+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopBigramTwitterProcessor
+    Sample_size : 200000
+    Training data size 47.49 (MB)
+
+    Gold-A: 0.620
+    Gold-B: 0.639
+
+    TrainedClassifier: maxent_stemm_100000
+    --------------------------------------
+    ID: 52aeaf62638dbf1336cbfe03
+    Date: 2013-12-16 07:44:34+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopStemmTwitterProcessor
+    Sample_size : 200000
+    Training data size 8.46 (MB)
+    Gold-A: 0.712
+    Gold-B: 0.785
+
+
+    TrainedClassifier: maxent_stemm_300000
+    --------------------------------------
+    ID: 52aec78c638dbf17e4e2c166
+    Date: 2013-12-16 09:27:40+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopStemmTwitterProcessor
+    Sample_size : 600000
+    Training data size 19.29 (MB)
+    Gold-A: 0.720
+    Gold-B: 0.784
+
+    TrainedClassifier: maxent_stemm_400000
+    --------------------------------------
+    ID: 52af0286638dbf19d4741616
+    Date: 2013-12-16 13:39:18+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopStemmTwitterProcessor
+    Sample_size : 800000
+    Training data size 23.97 (MB)
+    Gold-A: 0.721
+    Gold-B: 0.780
+
+    TrainedClassifier: maxent_stemm_500000
+    --------------------------------------
+    ID: 52af5e35638dbf1d5d25919f
+    Date: 2013-12-16 20:10:29+00:00
+    Cutoff : -0.02
+    Classifier : MaxentClassifier
+    Tokenizer : StopStemmTwitterProcessor
+    Sample_size : 1000000
+    Training data size 28.40 (MB)
+    Gold-A: 0.721
+    Gold-B: 0.784
