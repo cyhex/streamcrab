@@ -67,12 +67,16 @@ var SMM = {
     },
     
     charts : {
-        polartyChartContainer : '#chart svg',
+        chartPool : [],
+        polartyChartContainer : '#polarityChart svg',
+        trendChartContainer : '#trendChart svg',
+        
         updateInt : 2000, 
         init : function(){
+            SMM.streamData.genRandom();
             nv.addGraph(function() {
                 
-                chart = nv.models.scatterChart()
+                var chart = nv.models.scatterChart()
                         .showDistX(true)
                         .showDistY(true);
                 
@@ -84,15 +88,29 @@ var SMM = {
 
                 d3.select(SMM.charts.polartyChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart);
                 nv.utils.windowResize(chart.update);
-                setInterval(function() { SMM.charts.redraw(chart) }, SMM.charts.updateInt);
-                SMM.charts.polartyCahrt = chart;
+               
+                SMM.charts.chartPool.push(chart);
+                
+                var chart1 = nv.models.lineChart();
+                
+                //chart.xAxis.tickFormat(d3.format('.02f')).axisLabel('Time');
+                //chart.yAxis.tickFormat(d3.format('.02f')).axisLabel('Trend');
+
+                d3.select(SMM.charts.trendChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart1);
+                nv.utils.windowResize(chart1.update);
+               
+                SMM.charts.chartPool.push(chart1);
             });
+            
+           setInterval(function() { SMM.charts.redraw() }, SMM.charts.updateInt);
             
         },
         
         redraw: function(chart) {
             SMM.streamData.genRandom();
-            chart.update();
+            for (i in SMM.charts.chartPool){
+                SMM.charts.chartPool[i].update();
+            }
         }
     }
     
