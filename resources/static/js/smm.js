@@ -25,16 +25,27 @@ var SMM = {
     streamData: {
         positive: [],
         negative: [],
+        
         getData: function() {
             var d = [
-                {key: 'Positve', values: SMM.streamData.positive},
-                {key: 'Negative', values: SMM.streamData.negative}
+                {key: 'Positve', color: "green", values: SMM.streamData.positive},
+                {key: 'Negative', color: "red",  values: SMM.streamData.negative}
             ];
+            
             return d;
         },
+        
         genRandom: function() {
             var points = 1;
             var now = new Date();
+            
+            if (SMM.streamData.positive.length > 20) {
+		SMM.streamData.positive.shift();
+            }
+            
+            if (SMM.streamData.negative.length > 20) {
+		SMM.streamData.negative.shift();
+            }
             
             for (j = 0; j < points; j++) {
                 var d = {
@@ -63,16 +74,15 @@ var SMM = {
                 
                 chart = nv.models.scatterChart()
                         .showDistX(true)
-                        .showDistY(true)
-                        .color(d3.scale.category10().range());
+                        .showDistY(true);
                 
-                chart.xAxis.tickFormat(d3.format('.02f'));
-                chart.yAxis.tickFormat(d3.format('.02f'));
+                chart.xAxis.tickFormat(d3.format('.02f')).axisLabel('Time');
+                chart.yAxis.tickFormat(d3.format('.02f')).axisLabel('Polarity');
                 chart.tooltipContent(function(key) {
                     return "<h3>" + key + "</h3>";
                 });
 
-                SMM.charts.redraw(chart);
+                d3.select(SMM.charts.polartyChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart);
                 nv.utils.windowResize(chart.update);
                 setInterval(function() { SMM.charts.redraw(chart) }, SMM.charts.updateInt);
                 SMM.charts.polartyCahrt = chart;
@@ -82,7 +92,7 @@ var SMM = {
         
         redraw: function(chart) {
             SMM.streamData.genRandom();
-            d3.select(SMM.charts.polartyChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart);
+            chart.update();
         }
     }
     
