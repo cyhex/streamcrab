@@ -33,6 +33,7 @@ class SimpleProcessor():
         fq = FreqDist(cls.getClassifierTokens(text))
         return dict((k, v) for k, v in fq.items())
 
+
 class StopWordsMixin():
     @classmethod
     def remove_stop_words(self, tokens):
@@ -165,11 +166,11 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
         fq = FreqDist(cls.getClassifierTokens(text))
         return dict((k, v) for k, v in fq.items())
 
+
 class StopStemmTwitterProcessor(StopTwitterProcessor):
     """
     StopTwitterProcessor, Stemmer
     """
-
 
     @classmethod
     def getClassifierTokens(cls, text):
@@ -203,16 +204,3 @@ class StopBigramTwitterProcessor(StopTwitterProcessor):
     def getClassifierTokens(cls, text):
         tokens = StopTwitterProcessor.getClassifierTokens(text)
         return bigrams(tokens)
-
-
-class StopPosTwitterProcessor(StopTwitterProcessor):
-    """
-    Stop words, TwitterMixin, POS
-    """
-
-    @classmethod
-    def getClassifierTokens(cls, text):
-        text = cls.remove_urls(cls.clean(text))
-        tokens = StopTwitterProcessor.getClassifierTokens(text)
-        return pos_tag(tokens)
-
