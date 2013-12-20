@@ -22,3 +22,8 @@ class TestSimpleProcessor(TestCase):
         result = SimpleProcessor.getClassifierTokens(SimpleProcessor.clean(self.text))
         expect = "hello my name is timor".split()
         self.assertEqual(expect, result)
+
+    def test_getFeatures(self):
+        result = SimpleProcessor.getFeatures(SimpleProcessor.clean(self.text))
+        expect = {'timor': 1, 'is': 1, 'my': 1, 'hello': 1, 'name': 1}
+        self.assertEqual(expect, result)

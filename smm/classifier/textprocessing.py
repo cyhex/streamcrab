@@ -1,9 +1,11 @@
 from nltk import pos_tag
 from nltk import corpus
 from nltk import PorterStemmer
+from nltk import FreqDist
 from smm.classifier import emoticons
 from smm.classifier.ngrams import bigrams
 import re
+
 
 stopwords = corpus.stopwords.words('english')
 
@@ -26,6 +28,10 @@ class SimpleProcessor():
     def getClassifierTokens(cls, text):
         return text.split()
 
+    @classmethod
+    def getFeatures(cls, text):
+        fq = FreqDist(cls.getClassifierTokens(text))
+        return dict((k, v) for k, v in fq.items())
 
 class StopWordsMixin():
     @classmethod
@@ -154,6 +160,10 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
         tokes = cls.remove_stop_words(tokes)
         return tokes
 
+    @classmethod
+    def getFeatures(cls, text):
+        fq = FreqDist(cls.getClassifierTokens(text))
+        return dict((k, v) for k, v in fq.items())
 
 class StopStemmTwitterProcessor(StopTwitterProcessor):
     """
@@ -206,9 +216,3 @@ class StopPosTwitterProcessor(StopTwitterProcessor):
         tokens = StopTwitterProcessor.getClassifierTokens(text)
         return pos_tag(tokens)
 
-
-def feature_extractor(text):
-    # poor's man delayed import :)
-    from smm.config import classifier_tokenizer
-
-    return dict.fromkeys(classifier_tokenizer.getClassifierTokens(text), 1)

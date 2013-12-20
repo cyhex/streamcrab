@@ -8,7 +8,6 @@ import time
 from smm.models import RawStreamQueue, ClassifiedStream
 from smm import config
 from smm.classifier import labels
-from smm.classifier.textprocessing import feature_extractor
 import logging
 
 class ClassifierWorker(Process):
@@ -51,7 +50,7 @@ class ClassifierWorker(Process):
 
 
     def get_polarity(self, text):
-        features = feature_extractor(text)
+        features = config.classifier_tokenizer.getFeatures(text)
 
         prob = self.classifier.prob_classify(features)
 

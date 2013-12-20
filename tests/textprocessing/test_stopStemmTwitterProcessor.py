@@ -13,3 +13,8 @@ class TestStopStemmTwitterProcessor(TestCase):
 
     def test_getClassifierTokens(self):
         self.assertEqual(['quick', 'brown', 'fox', 'jump', 'lazi', 'dog', '#crazyfox', '__h__'], StopStemmTwitterProcessor.getClassifierTokens(self.text))
+
+    def test_getFeatures(self):
+        result = StopStemmTwitterProcessor.getFeatures(self.text)
+        expect = {'quick': 1, 'brown': 1, 'fox': 1, 'jump': 1, 'lazi': 1, 'dog':1, '#crazyfox':1, '__h__':1}
+        self.assertEqual(expect, result)

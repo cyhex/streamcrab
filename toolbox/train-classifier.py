@@ -8,11 +8,11 @@ import argparse
 import argcomplete
 import sys
 import io
-import mongoengine
 
-from smm.classifier.textprocessing import feature_extractor, TwitterMixin
+from smm.classifier.textprocessing import TwitterMixin
 from smm import models
 from smm.classifier import labels
+from smm.config import classifier_tokenizer as tokenizer
 from smm import config
 
 parser = argparse.ArgumentParser(description='Classify collected raw tweets', usage='python train-classifier.py myClassifier 1000')
@@ -70,15 +70,15 @@ if args.source:
         else:
             continue
 
-        featureset.append(( feature_extractor(gloss), label))
+        featureset.append((tokenizer.getFeatures(gloss), label))
 
 else:
 
 
     #featureset = nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=1)[0:args.size])
     #featureset += nltk.apply_features(apply_features, models.TrainDataRaw.objects(polarity=-1)[0:args.size])
-    featureset = [(feature_extractor(row.text), labels.positive) for row in models.TrainDataRaw.objects(polarity=1).timeout(False)[0:args.size]]
-    featureset += [(feature_extractor(row.text), labels.negative) for row in models.TrainDataRaw.objects(polarity=-1).timeout(False)[0:args.size]]
+    featureset = [(tokenizer.getFeatures(row.text), labels.positive) for row in models.TrainDataRaw.objects(polarity=1).timeout(False)[0:args.size]]
+    featureset += [(tokenizer.getFeatures(row.text), labels.negative) for row in models.TrainDataRaw.objects(polarity=-1).timeout(False)[0:args.size]]
 
 if args.type == 'maxent':
     # Train

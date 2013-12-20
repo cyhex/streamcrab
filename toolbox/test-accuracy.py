@@ -9,10 +9,9 @@ import sys
 import io
 import nltk
 
-from smm.classifier.textprocessing import feature_extractor
 from smm.classifier import labels
 from smm import models
-
+from smm import config
 
 parser = argparse.ArgumentParser(description='Test accuracy of Trained data',
                                  usage='python test-accuracy.py myClassifier data/testDataSource.csv')
@@ -40,7 +39,8 @@ gold = []
 for l in f.readlines():
     label, text = l.split('\t')
     if label in [labels.negative, labels.positive]:
-        gold.append(((feature_extractor(text), label)))
+        features = config.classifier_tokenizer.getFeatures(text)
+        gold.append(((features, label)))
 
 
 row  = models.TrainedClassifiers.objects(name=args.name).first()
