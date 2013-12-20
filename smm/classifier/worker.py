@@ -44,21 +44,21 @@ class ClassifierWorker(Process):
         row.original = raw_data.original
         row.text = raw_data.text
         row.tokens = list(self.tokenizer.getSearchTokens(row.text))
-        row.polarity = self.get_polarity(row.text)
+        row.polarity, row.objectivity = self.get_classifications(row.text)
         row.save()
         self.logger.debug('ClassifiedStream saved %s', row.id)
 
-
-    def get_polarity(self, text):
+    def get_classifications(self, text):
         features = config.classifier_tokenizer.getFeatures(text)
 
         prob = self.classifier.prob_classify(features)
 
         classified_label = self.classifier.classify(features)
+        polarity = prob.prob(classified_label)
 
         if labels.negative == classified_label:
-            return prob.prob(classified_label) * -1
-        else:
-            return prob.prob(classified_label)
+            polarity *= -1
 
+        objectivity = 1 - (prob.prob(labels.negative) + prob.prob(labels.positive))
 
+        return polarity, objectivity

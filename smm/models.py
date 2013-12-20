@@ -36,6 +36,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
+    objectivity = mongoengine.FloatField()
     tokens = mongoengine.ListField(mongoengine.StringField(max_length=256))
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
