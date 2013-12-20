@@ -23,44 +23,53 @@ var SMM = {
         }
     },
     streamData: {
-        positive: [],
-        negative: [],
+        data: [],
+        trend:{ data:[], q : [], qSize: 10}, 
         
         getData: function() {
             var d = [
-                {key: 'Positve', color: "green", values: SMM.streamData.positive},
-                {key: 'Negative', color: "red",  values: SMM.streamData.negative}
+                {key: 'Tweets', color:'green', values: SMM.streamData.data},
             ];
-            
             return d;
+        },
+        getTrendData: function(){
+            return [{key: 'Trend', color: 'gray', values: SMM.streamData.trend.data }]
+        },
+        
+        push: function(y, x){
+            var d = {y:y, x:x , size: 0.2,};
+            
+            if(y < 0){
+                d.color = 'red'; 
+            }
+            
+            SMM.streamData.data.push(d);
+            SMM.streamData.trend.q.push(d);
+            
+            if(SMM.streamData.trend.q.length > SMM.streamData.trend.qSize){
+               var x = SMM.streamData.trend.q[0].x;
+               var y_sum = 0;
+               
+               for (var j = 0; j < SMM.streamData.trend.qSize; j++) {
+                    y_sum +=  SMM.streamData.trend.q[0].y;
+                    SMM.streamData.trend.q.shift();
+                }
+                var a = {
+                    y:y_sum/SMM.streamData.trend.qSize, 
+                    x:x,
+                    size: 0.2,
+                };
+               SMM.streamData.trend.data.push(a);
+            }
+            
         },
         
         genRandom: function() {
-            var points = 1;
-            var now = new Date();
-            
-            if (SMM.streamData.positive.length > 20) {
-		SMM.streamData.positive.shift();
-            }
-            
-            if (SMM.streamData.negative.length > 20) {
-		SMM.streamData.negative.shift();
-            }
-            
-            for (j = 0; j < points; j++) {
-                var d = {
-                    y: Math.random(),
-                    x: now,
-                    size: 0.2
-                };
-                SMM.streamData.positive.push(d);
-
-                d = {
-                    y: Math.random()*-1,
-                    x: now,
-                    size: 0.2
-                };
-                SMM.streamData.negative.push(d);
+            var points = 5;
+            for (var j = 0; j < points; j++) {
+                var x = new Date();
+                var y = (Math.random() - 0.5) * 2;
+                SMM.streamData.push(y, x);
             }
         }
 
@@ -80,23 +89,23 @@ var SMM = {
                         .showDistX(true)
                         .showDistY(true);
                 
-                chart.xAxis.tickFormat(d3.format('.02f')).axisLabel('Time');
+                chart.xAxis.tickFormat(function(d) { return d3.time.format("%d.%m %M:%S")(new Date(d)) }).axisLabel('Time');
                 chart.yAxis.tickFormat(d3.format('.02f')).axisLabel('Polarity');
                 chart.tooltipContent(function(key) {
                     return "<h3>" + key + "</h3>";
                 });
 
-                d3.select(SMM.charts.polartyChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart);
+                d3.select(SMM.charts.polartyChartContainer).datum(SMM.streamData.getData()).transition().duration(200).call(chart);
                 nv.utils.windowResize(chart.update);
                
                 SMM.charts.chartPool.push(chart);
                 
                 var chart1 = nv.models.lineChart();
                 
-                //chart.xAxis.tickFormat(d3.format('.02f')).axisLabel('Time');
-                //chart.yAxis.tickFormat(d3.format('.02f')).axisLabel('Trend');
+                chart1.xAxis.tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) }).axisLabel('Time');
+                chart1.yAxis.tickFormat(d3.format('.02f')).axisLabel('Trend');
 
-                d3.select(SMM.charts.trendChartContainer).datum(SMM.streamData.getData()).transition().duration(500).call(chart1);
+                d3.select(SMM.charts.trendChartContainer).datum(SMM.streamData.getTrendData()).transition().duration(200).call(chart1);
                 nv.utils.windowResize(chart1.update);
                
                 SMM.charts.chartPool.push(chart1);
@@ -106,7 +115,7 @@ var SMM = {
             
         },
         
-        redraw: function(chart) {
+        redraw: function() {
             SMM.streamData.genRandom();
             for (i in SMM.charts.chartPool){
                 SMM.charts.chartPool[i].update();
