@@ -30,8 +30,7 @@ class SimpleProcessor():
 
     @classmethod
     def getFeatures(cls, text):
-        fq = FreqDist(cls.getClassifierTokens(text))
-        return dict((k, v) for k, v in fq.items())
+        return dict.fromkeys(cls.getClassifierTokens(text), 1)
 
 
 class StopWordsMixin():
@@ -163,8 +162,7 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
 
     @classmethod
     def getFeatures(cls, text):
-        fq = FreqDist(cls.getClassifierTokens(text))
-        return dict((k, v) for k, v in fq.items())
+        return dict.fromkeys(cls.getClassifierTokens(text), 1)
 
 
 class StopStemmTwitterProcessor(StopTwitterProcessor):
