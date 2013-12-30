@@ -170,3 +170,11 @@ Test results for different Classifier/Tokenizer:
     Training data size 28.40 (MB)
     Gold-A: 0.721
     Gold-B: 0.784
+
+
+Notes:
+------
+
+Switching to FreqDist for feature extraction yields structure like {feature: nCount} gives worse results then
+{feature : exists } - That is somewhat puzzling for me...     
+
