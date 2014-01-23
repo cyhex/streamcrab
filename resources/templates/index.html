@@ -2,32 +2,41 @@
 <html>
 <head>
     <link href="/static/css/nv.d3.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/smm.css" rel="stylesheet" type="text/css">
     
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/static/js/jquery-1.10.2.min.js"></script>
     <script src="/static/js/socket.io.js"></script>
     
     <script src="/static/js/d3.v3.js"></script>
     <script src="/static/js/nv.d3.min.js"></script>
     <script src="/static/js/smm.js"></script>
     
-
-    
-    
     <title>Hello</title>
-    
-    
+
 </head>
 <body>
+    
+cummulative data:
+p, n %    
+p, n Count
+
+obhectivity
+
+polarity destribution over time
+Polarty trend
+objectivity trend
+
+
+    
 <input id="keyords" type="text">
 <button id="track">track</button>
 
-
-<div id="polarityChart" style="width: 100%">
-    <svg style="width: 100%; height: 400px"></svg>
+<div id="polarityChart" >
+    <svg></svg>
 </div>
 
-<div id="trendChart" style="width: 100%">
-    <svg style="width: 100%; height: 400px"></svg>
+<div id="trendChart" >
+    <svg></svg>
 </div>
 
 <div id="content"></div>
@@ -35,8 +44,11 @@
 
 
 <script>
+    
+    SMM.streamChannel.listen();
     SMM.charts.init();
-   
+    
+    //file:///home/gx/Desktop/novus-nvd3-3dd43d6/examples/multiChart.html
     
 </script>
 

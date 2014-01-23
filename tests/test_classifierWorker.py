@@ -5,12 +5,11 @@ from smm.models import RawStreamQueue, ClassifiedStream
 from smm.classifier.worker import ClassifierWorker
 import nltk
 
+
 class TestClassifierWorker(TestCaseDB):
-
-
     def setUp(self):
         super(TestClassifierWorker, self).setUp()
-        self.cls = nltk.NaiveBayesClassifier.train([({'a':'a', 'b':'b'}, 'positive')])
+        self.cls = nltk.NaiveBayesClassifier.train([({'a': 'a', 'b': 'b'}, 'positive')])
         self.data = []
         for i in range(5):
             d = RawStreamQueue()
@@ -19,7 +18,6 @@ class TestClassifierWorker(TestCaseDB):
             d.text = "this is a test"
             self.data.append(d)
         ClassifiedStream.drop_collection()
-
 
 
     def test_worker(self):
@@ -40,7 +38,6 @@ class TestClassifierWorker(TestCaseDB):
         w.join()
 
         self.assertEqual(ClassifiedStream.objects.count(), 5)
-
 
 
     def tearDown(self):

@@ -2,7 +2,7 @@ __author__ = 'gx'
 import logging
 import os
 import smm
-from smm.classifier.textprocessing import StopTwitterProcessor, StopPosTwitterProcessor
+from smm.classifier.textprocessing import StopStemmTwitterProcessor, StopTwitterProcessor
 
 basepath =  os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..'))
 
@@ -22,11 +22,12 @@ test_mongo_db = dict(db='smm_test', host='localhost', port=27017, is_slave=False
 # Classifiers
 # =============
 
+# default training set
+classifier="maxent_20000"
 # default tokenizer
-classifier="maxEnt_100000"
-classifier_tokenizer = StopTwitterProcessor
-classifier_pool_size = 4
-
+classifier_tokenizer = StopStemmTwitterProcessor
+# number of classifier processes to start (should not exceed number of cpu cores)
+classifier_pool_size = 1
 
 
 # TWITTER DataStream Plugin
@@ -43,6 +44,7 @@ twitter_http_error_sleep = 10
 
 #how often should we check for changed keywords
 twitter_kw_interval_check = 10
+
 
 # Server Flask & socketio
 # =======================
@@ -66,3 +68,4 @@ filelog.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 filelog.setFormatter(formatter)
 logging.getLogger('').addHandler(filelog)
+

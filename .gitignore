@@ -37,3 +37,4 @@ smm/config.py
 .pydevproject
 .idea
 venv
+/resources/nbproject/private/

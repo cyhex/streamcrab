@@ -10,12 +10,13 @@ setup(
     author_email='timor@cyhex.com',
     description='Real-Time, multi-lingual Twitter sentiment analyzer engine',
     install_requires=[
-        "twitter",
+        "requests",
+        "requests_oauthlib",
         "mongoengine",
         "nltk",
         'numpy',
+        'gevent',
         'gevent-socketio',
-	    'gevent',
         'flask',
         'argcomplete'
     ],

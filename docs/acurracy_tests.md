@@ -176,5 +176,5 @@ Notes:
 ------
 
 Switching to FreqDist for feature extraction yields structure like {feature: nCount} gives worse results then
-{feature : exists } - That is something that i find strange... 
+{feature : exists } - That is something that i find strange...
 

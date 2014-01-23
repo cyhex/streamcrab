@@ -1,7 +1,7 @@
 from nltk import pos_tag
 from nltk import corpus
 from nltk import PorterStemmer
-from nltk import FreqDist
+from nltk import wordpunct_tokenize
 from smm.classifier import emoticons
 from smm.classifier.ngrams import bigrams
 import re
@@ -171,11 +171,15 @@ class StopStemmTwitterProcessor(StopTwitterProcessor):
     """
 
     @classmethod
+    def getSearchTokens(cls, text):
+        return wordpunct_tokenize(text)
+
+    @classmethod
     def getClassifierTokens(cls, text):
         stemmer = PorterStemmer()
 
         tokens = StopTwitterProcessor.getClassifierTokens(text)
-        for i,t in enumerate(tokens):
+        for i, t in enumerate(tokens):
             tokens[i] = stemmer.stem(t)
 
         return tokens

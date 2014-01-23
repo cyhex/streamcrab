@@ -3,8 +3,8 @@ __author__ = 'gx'
 import time
 import logging
 
-import twitter
-
+import json
+from twitterStream import TwitterStreamHandler, TwitterStreamHttpException
 from smm.datastream.plugins.abstract import DataStreamAbstract
 from smm.models import RawStreamQueue, StreamSource, SocketSession
 from smm import config
@@ -15,22 +15,19 @@ logger = logging.getLogger('TwitterWorker')
 class TwitterWorkerKwChange(Exception):
     pass
 
+
 class TwitterWorkerKwEmpty(Exception):
     pass
+
 
 class TwitterWorkerTerminate(Exception):
     pass
 
 
-class TwitterWorkerTimeout(Exception):
-    pass
-
 class TwitterWorker(DataStreamAbstract):
     def __init__(self, terminate):
         DataStreamAbstract.__init__(self, terminate)
-
-        self.auth = twitter.OAuth(config.twitter_oauth_token, config.twitter_oauth_secret,
-                                  config.twitter_oauth_custkey, config.twitter_oauth_custsecret)
+        self.stream = TwitterStreamHandler()
 
         self.kw_track = SocketSession.get_keywords()
         self.kw_hash = SocketSession.get_keywords_hash()
@@ -39,46 +36,45 @@ class TwitterWorker(DataStreamAbstract):
 
     def run(self):
         logger.info("started %s", self.getName())
+
         while True:
             if self.terminate.isSet():
                 logger.info("Terminated")
                 return None
 
             try:
+                self.check_keywords()
+                self.stream.connect(self.kw_track)
                 self.get_tweets()
 
             except TwitterWorkerKwChange, e:
                 logger.info(e.message)
 
             except TwitterWorkerKwEmpty, e:
-                sleep_int = config.twitter_kw_interval_check/2
-                logger.warn("%s - sleeping for %d sec", e.message,sleep_int)
+                sleep_int = config.twitter_kw_interval_check / 2
+                logger.warn("%s - sleeping for %d sec", e.message, sleep_int)
                 time.sleep(sleep_int)
 
-            except twitter.TwitterHTTPError, e:
+            except TwitterStreamHttpException, e:
                 logger.warn("%s - sleeping for %d sec", e.message, config.twitter_http_error_sleep)
                 time.sleep(config.twitter_http_error_sleep)
 
             except TwitterWorkerTerminate:
                 logger.info("Terminated")
                 return None
+            except Exception, e:
+                logger.warn(e.message)
 
     def get_tweets(self):
-        self.check_keywords()
 
-        if not self.kw_track:
-            raise TwitterWorkerKwEmpty('keywords are empty')
-
-        stream = twitter.TwitterStream(auth=self.auth, timeout=5)
-        iterator = stream.statuses.filter(track=",".join(self.kw_track))
-
-        for tweet in iterator:
+        for data in self.stream.get_iter():
+            try:
+                tweet = json.loads(data)
+            except:
+                continue
 
             if self.terminate.isSet():
                 raise TwitterWorkerTerminate()
-
-            if tweet.get('timeout',False):
-                time.sleep(config.twitter_http_error_sleep)
 
             self.check_keywords()
             self.save(tweet)
@@ -87,7 +83,6 @@ class TwitterWorker(DataStreamAbstract):
         """
         check if twitter keywords are changed
         """
-
         if (time.time() - self.kw_last_check) > self.kw_int:
             kw_hash = SocketSession.get_keywords_hash()
 
