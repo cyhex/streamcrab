@@ -9,17 +9,18 @@ import StringIO
 from smm import config
 from smm.classifier import labels
 
+
 class StreamSource(object):
     TWITTER = "twitter"
 
 
 class MongoEngineDictMx(object):
-
     def to_dict(self):
         d = self.to_mongo()
-        d['_id'] = str( d['_id'])
+        d['_id'] = str(d['_id'])
         d['stamp'] = self.id.generation_time.isoformat()
         return d.to_dict()
+
 
 class RawStreamQueue(mongoengine.Document):
     text = mongoengine.StringField(required=True, max_length=1024)
@@ -36,14 +37,12 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
-    objectivity = mongoengine.FloatField()
     tokens = mongoengine.ListField(mongoengine.StringField(max_length=256))
     source = mongoengine.StringField(required=True)
     original = mongoengine.DictField()
 
     @classmethod
     def find_tokens(cls, kw, from_id=None):
-
         if not from_id:
             d = datetime.datetime.now() - datetime.timedelta(seconds=cls.TTL)
             from_id = ObjectId.from_datetime(d)
@@ -101,6 +100,7 @@ class TrainDataRaw(mongoengine.Document):
             return labels.negative
         else:
             return labels.positive
+
 
 class TrainedClassifiers(mongoengine.Document):
     name = mongoengine.StringField(required=True, max_length=256, unique=True)

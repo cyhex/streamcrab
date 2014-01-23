@@ -44,7 +44,7 @@ class ClassifierWorker(Process):
         row.original = raw_data.original
         row.text = raw_data.text
         row.tokens = list(self.tokenizer.getSearchTokens(row.text))
-        row.polarity, row.objectivity = self.get_classifications(row.text)
+        row.polarity = self.get_classifications(row.text)
         row.save()
         self.logger.debug('ClassifiedStream saved %s', row.id)
 
@@ -59,6 +59,5 @@ class ClassifierWorker(Process):
         if labels.negative == classified_label:
             polarity *= -1
 
-        objectivity = 1 - (prob.prob(labels.negative) + prob.prob(labels.positive))
 
-        return polarity, objectivity
+        return polarity
