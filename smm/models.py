@@ -33,7 +33,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
         'indexes': ['tokens'],
     }
 
-    TTL = 86400
+    TTL = 60*60
 
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()
@@ -44,7 +44,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
     @classmethod
     def find_tokens(cls, kw, from_id=None):
         if not from_id:
-            d = datetime.datetime.now() - datetime.timedelta(seconds=cls.TTL)
+            d = datetime.datetime.utcnow() - datetime.timedelta(seconds=cls.TTL)
             from_id = ObjectId.from_datetime(d)
 
         q = mongoengine.Q(tokens__all=kw) & mongoengine.Q(id__gt=from_id)
