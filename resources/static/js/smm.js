@@ -28,7 +28,6 @@ var SMM = {
     streamData: {
         data: [],
         trend: {data: [], q: [], qSize: 10},
-        objectivity: {data: [], q: [], qSize: 10},
         sums: {pCount: 0, nCount: 0, pSum: 0, nSum: 0, },
         getData: function() {
             var d = [
@@ -43,17 +42,31 @@ var SMM = {
             ];
         },
         getSumData: function() {
+            if(SMM.streamData.sums.pSum + Math.abs(SMM.streamData.sums.nSum) == 0){
+                return [];
+            }
+            
+            return [
+                {
+                    key: 'Positive ',
+                    value: SMM.streamData.sums.pSum},
+                {
+                    key: 'Negative ',
+                    value: Math.abs(SMM.streamData.sums.nSum)},
+            ];
+        },
+        getCountData: function() {
             var t = SMM.streamData.sums.pCount + SMM.streamData.sums.nCount;
             if(!t){
                 return [];
             }
             return [
                 {
-                    key: 'Positive',
-                    value: SMM.streamData.sums.pCount / t},
+                    key: 'Positive (%)',
+                    value: (SMM.streamData.sums.pCount / t)*100},
                 {
-                    key: 'Negative',
-                    value: SMM.streamData.sums.nCount / t},
+                    key: 'Negative (%)',
+                    value: (SMM.streamData.sums.nCount / t)*100},
             ];
         },
         push: function(data) {
@@ -106,9 +119,11 @@ var SMM = {
     charts: {
         chartPool: [],
         sumChartContainer: '#sumChart svg',
+        countChartContainer: '#countChart svg',
         polartyChartContainer: '#polarityChart svg',
         trendChartContainer: '#trendChart svg',
         updateInt: 2000,
+                
         init: function() {
             nv.addGraph(function() {
                 var chartSumColors = d3.scale.ordinal().range(['green', 'red']);
@@ -116,10 +131,9 @@ var SMM = {
                 var chartSum = nv.models.pieChart()
                         .showLegend(false).color(chartSumColors.range())
                         .x(function(d) {
-                    return d.key
-                })
-                        .y(function(d) {
-                    return d.value
+                    return d.key 
+                }).y(function(d) {
+                    return d.value 
                 });
 
 
@@ -127,11 +141,28 @@ var SMM = {
                 chartSum.updateManual = function() {
                     d3.select(SMM.charts.sumChartContainer).datum(SMM.streamData.getSumData).transition().duration(200).call(chartSum);
                 }
-
-                d3.select(SMM.charts.sumChartContainer).datum(SMM.streamData.getSumData).transition().duration(200).call(chartSum);
+                chartSum.updateManual();
                 nv.utils.windowResize(chartSum.update);
                 SMM.charts.chartPool.push(chartSum);
+                
+                var chartCount = nv.models.pieChart()
+                        .showLegend(false).color(chartSumColors.range())
+                        .x(function(d) {
+                    return d.key 
+                }).y(function(d) {
+                    return d.value 
+                });
 
+
+
+                chartCount.updateManual = function() {
+                    d3.select(SMM.charts.countChartContainer).datum(SMM.streamData.getCountData).transition().duration(200).call(chartCount);
+                }
+                chartCount.updateManual();
+                nv.utils.windowResize(chartCount.update);
+                SMM.charts.chartPool.push(chartCount);
+                
+                
                 var chartDist = nv.models.scatterChart()
                         .showDistX(true)
                         .showDistY(true)
@@ -161,8 +192,7 @@ var SMM = {
                 nv.utils.windowResize(chartTrend.update);
 
                 SMM.charts.chartPool.push(chartTrend);
-
-
+                
 
             });
 

@@ -16,35 +16,36 @@
 </head>
 <body>
 
-<pre>
-cummulative data:
-p, n %    
-p, n Count
-
-obhectivity
-
-polarity destribution over time
-Polarty trend
-objectivity trend
-</pre>
-
-    
 <input id="keyords" type="text">
 <button id="track">track</button>
 
-<div id="sumChart" >
+<div class='row'>
+    <div id='totals' >
+        <div id="countChart" class='totalsChart chart'  >
+            <header>Tweet count in %</header>
+            <svg></svg>
+        </div>
+
+        <div id="sumChart" class='totalsChart chart' >
+            <header>Polarity sums</header>
+            <svg></svg>
+        </div>
+
+    </div>
+
+    <div id="trendChart" class="chart" >
+        <header>Polarity trend over time</header>
+        <svg></svg>
+    </div>
+
+</div>
+
+<div id="polarityChart" class="chart" >
+    <header>Polarity distribution over time</header>
     <svg></svg>
 </div>
 
-<div id="polarityChart" >
-    <svg></svg>
-</div>
 
-<div id="trendChart" >
-    <svg></svg>
-</div>
-
-<div id="content"></div>
 
 
 
@@ -52,8 +53,6 @@ objectivity trend
     
     SMM.streamChannel.listen();
     SMM.charts.init();
-    
-    //file:///home/gx/Desktop/novus-nvd3-3dd43d6/examples/multiChart.html
     
 </script>
 
