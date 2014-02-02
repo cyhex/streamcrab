@@ -1,0 +1,125 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 31-Dec-2013, 20:53:42
+    Author     : gx
+*/
+
+body{
+    margin: 0px;
+    padding: 0px;
+    
+}
+
+header.header{
+    text-align: center;
+    background-color: #eee;
+    border-bottom: 1px solid #aaa;
+    padding: 10px;
+    margin-bottom: 20px;
+     box-shadow: 0 0 10px 5px #CCCCCC;
+    -webkit-box-shadow: 0 0 10px 5px #CCCCCC;
+    overflow: hidden;
+}
+#logo{
+    overflow: hidden;
+    text-align: left;
+    color: #333;
+    width: 40%;
+    float: left;
+}
+#logo h1{
+    margin: 0px;
+}
+#logo h1 a{
+    margin: 0px;
+    text-decoration: none;
+    color: #333;
+}
+#github{
+    display: block;
+    margin-top: 20px;
+}
+
+
+#totals{
+    overflow: hidden;
+    float: left;
+}
+#totals .chart{
+    margin-right: 10px;
+}
+.totalsChart svg{
+    height: 300px;
+    width: 400px;
+}
+.totalsChart {
+    float: left;
+}
+
+#trendChart{
+    width: auto;
+    margin-left: 825px;
+    height: 330px;
+}
+
+@media screen and (max-width: 1279px){
+    #trendChart{
+    margin-left: 0px;
+    clear: left;
+    }
+}
+
+#trendChart svg{
+    width: 100%;
+}
+
+#polarityChart svg{
+    height: 400px;
+}
+
+
+.chart header{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.chart {
+    border: 1px solid #eee;
+}
+
+.row{
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+#trackingForm{
+    margin-top: 20px;
+    text-align: center;
+    width: 450px;
+    float: left;
+}
+
+input{
+    border: 1px solid #aaa;
+    padding: 2px;
+}
+
+input.loading{
+    background-image: url("/static/img/loader.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+a {color: #4183C4;}
+
+
+.infobox{
+    padding: 20px;
+    border: 1px solid #eee;
+    margin: 20px;
+}

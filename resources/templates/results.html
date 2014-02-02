@@ -23,12 +23,12 @@
             </div>
             <form id="trackingForm" method="get" action="/results">
                 <div>
-                    <div><strong>Tracking</strong></div>
+                    <div><strong>Searching for:</strong></div>
                     <input type="text" name="keyword" value="{{keyword}}" id="keyword" class="loading">
                 </div>
                 <div class="row">
-                    <button id="stopTracking">Stop Tracking</button>
-                    <button id="restartTracking">Restart Tracking</button>
+                    <button id="stopTracking">Stop searching</button>
+                    <button id="restartTracking">Restart search</button>
                 </div>
 
             </form>
@@ -66,10 +66,8 @@
 
 
         <script>
-
-SMM.streamChannel.listen('{{keyword}}');
-SMM.charts.init();
-
+            SMM.streamChannel.listen('{{keyword}}');
+            SMM.charts.init();
         </script>
 
     </body>

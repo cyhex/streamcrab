@@ -13,14 +13,30 @@
             </div>
             <form id="trackingForm" method="get" action="/results">
                 <div>
-                    <div><strong>Tracking</strong></div>
-                    <input type="text" name="keyword" value="{{keyword}}" id="keyword" >
+                    <div><strong>Search for:</strong></div>
+                    <input type="text" name="keyword" value="{{keyword}}" id="keyword" placeholder="movies, companies, products" >
                 </div>
                 <div>
-                    <button id="restartTracking">Start Tracking</button>
+                    <button id="restartTracking">Start search</button>
                 </div>
 
             </form>
         </header>
+        
+        <div class="infobox">
+            <p>
+                Sentiment analysis or opinion mining refers to the application of natural language processing, computational linguistics, and text analytics to identify and extract subjective information in source materials.
+            </p>
+            <p>
+                Generally speaking, sentiment analysis aims to determine the attitude of a speaker or a writer with respect to some topic or the overall tonality of a document. 
+                The attitude may be his or her judgment or evaluation, 
+                affective state (that is to say, the emotional state of the author when writing), or the intended emotional 
+                communication (that is to say, the emotional effect the author wishes to have on the reader).
+            </p>
+            <p>
+                --<br  />
+                <a href="http://en.wikipedia.org/wiki/Sentiment_analysis">Wikipedia</a> 
+            </p>
+        </div>
     </body>
 </html>
