@@ -22,6 +22,11 @@ models.connect()
 def index():
     return render_template('index.html')
 
+@app.route('/results')
+def results():
+    keyword = request.args.get('keyword', '')
+    return render_template('results.html',keyword=keyword)
+
 
 class StreamNamespace(BaseNamespace):
     def __init__(self, *args, **kwargs):
@@ -54,6 +59,12 @@ class StreamNamespace(BaseNamespace):
                 gevent.sleep(1)
 
         self.spawn(fetch_stream)
+
+    def recv_disconnect(self):
+        if hasattr(self, 'socket_session'):
+            self.socket_session.delete()
+        self.logger.debug('Disconnect from %s', str(self.socket))
+        self.disconnect(silent=True)
 
     def on_ping(self):
         self.logger.debug('Ping from %s', str(self.socket))

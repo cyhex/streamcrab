@@ -1,10 +1,10 @@
 
 var SMM = {
     streamChannel: {
-        trackBtn: '#track',
-        kwInput: '#keyords',
+        stopTracking: '#stopTracking',
+        restartTracking: '#restartTracking',
         stream: null,
-        listen: function() {
+        listen: function(kw) {
 
             if (SMM.stream == null) {
                 SMM.stream = io.connect('/stream');
@@ -14,14 +14,28 @@ var SMM = {
                 SMM.streamData.push(data);
             });
 
-            $(SMM.streamChannel.trackBtn).click(function() {
-                SMM.stream.emit('track', $(SMM.streamChannel.kwInput).val());
-                SMM.streamData.clear();
-                SMM.charts.redraw()
+            $(SMM.streamChannel.stopTracking).click(function() {
+                SMM.stream.disconnect();
+                SMM.stream = null;
+                $("#keyword").removeClass('loading');
+                $(this).attr('disabled','disabled');
+                return false;
             });
 
+            $(SMM.streamChannel.restartTracking).click(function() {
+                SMM.stream.disconnect();
+                SMM.stream = null;
+                $(this).submit();
+            });
+
+            SMM.stream.emit('track', kw);
+            SMM.streamData.clear();
+            SMM.charts.redraw()
+
             setInterval(function() {
-                SMM.stream.emit('ping')
+                if(SMM.stream){
+                    SMM.stream.emit('ping')
+                }
             }, 2000);
         }
     },
