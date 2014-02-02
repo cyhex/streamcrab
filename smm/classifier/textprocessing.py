@@ -1,11 +1,8 @@
-from nltk import pos_tag
 from nltk import corpus
 from nltk import PorterStemmer
 from nltk import wordpunct_tokenize
 from smm.classifier import emoticons
-from smm.classifier.ngrams import bigrams
 import re
-
 
 stopwords = corpus.stopwords.words('english')
 
@@ -112,27 +109,7 @@ class TwitterMixin(object):
         return text
 
 
-class StopWordsProcessor(SimpleProcessor, StopWordsMixin):
-    """
-    Simple word tokenizer with stopwords filtering
-    """
-
-    @classmethod
-    def getSearchTokens(cls, text):
-        text = cls.clean(text)
-        tokes = SimpleProcessor.getSearchTokens(text)
-        tokes = cls.remove_stop_words(tokes)
-        return tokes
-
-    @classmethod
-    def getClassifierTokens(cls, text):
-        text = cls.clean(text)
-        tokes = SimpleProcessor.getClassifierTokens(text)
-        tokes = cls.remove_stop_words(tokes)
-        return tokes
-
-
-class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
+class TwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
     """
     stop words, TwitterMixin
     """
@@ -151,12 +128,14 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
         text = cls.remove_usernames(text)
         tokes = SimpleProcessor.getClassifierTokens(text)
         tokes = cls.remove_stop_words(tokes)
+        tokes = cls.stemm(tokes)
         return tokes
 
     @classmethod
     def getSearchTokens(cls, text):
         text = cls.clean(text)
-        tokes = SimpleProcessor.getSearchTokens(text)
+        tokes = wordpunct_tokenize(text)
+        tokes = filter(lambda t: t.isalnum() or t in cls._mapping.keys(), tokes);
         tokes = cls.remove_stop_words(tokes)
         return tokes
 
@@ -165,44 +144,11 @@ class StopTwitterProcessor(SimpleProcessor, TwitterMixin, StopWordsMixin):
         return dict.fromkeys(cls.getClassifierTokens(text), 1)
 
 
-class StopStemmTwitterProcessor(StopTwitterProcessor):
-    """
-    StopTwitterProcessor, Stemmer
-    """
-
     @classmethod
-    def getSearchTokens(cls, text):
-        return wordpunct_tokenize(text)
-
-    @classmethod
-    def getClassifierTokens(cls, text):
+    def stemm(cls, tokens):
         stemmer = PorterStemmer()
 
-        tokens = StopTwitterProcessor.getClassifierTokens(text)
         for i, t in enumerate(tokens):
             tokens[i] = stemmer.stem(t)
 
         return tokens
-
-
-class StopPosTwitterProcessor(StopTwitterProcessor):
-    """
-    Stop words, TwitterMixin, POS
-    """
-
-    @classmethod
-    def getClassifierTokens(cls, text):
-        text = cls.remove_urls(cls.clean(text))
-        tokens = StopTwitterProcessor.getClassifierTokens(text)
-        return pos_tag(tokens)
-
-
-class StopBigramTwitterProcessor(StopTwitterProcessor):
-    """
-    StopTwitterProcessor, Bigrams
-    """
-
-    @classmethod
-    def getClassifierTokens(cls, text):
-        tokens = StopTwitterProcessor.getClassifierTokens(text)
-        return bigrams(tokens)

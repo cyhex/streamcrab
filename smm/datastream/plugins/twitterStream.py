@@ -18,6 +18,9 @@ class TwitterStreamHandler(object):
         self.request = None
 
     def connect(self, keywords):
+        if not len(keywords):
+            raise TwitterStreamHttpException('HTTP code 406', status_code=406)
+
         self.auth = OAuth1(config.twitter_oauth_custkey, config.twitter_oauth_custsecret,
                            config.twitter_oauth_token, config.twitter_oauth_secret)
 
