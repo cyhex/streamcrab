@@ -1,3 +1,6 @@
+from numpy.distutils.command.config import config
+from smm.models import SocketSession
+
 __author__ = 'gx'
 
 from flask import Flask, render_template, Response, request
@@ -22,10 +25,11 @@ models.connect()
 def index():
     return render_template('index.html')
 
+
 @app.route('/results')
 def results():
     keyword = request.args.get('keyword', '')
-    return render_template('results.html',keyword=keyword)
+    return render_template('results.html', keyword=keyword)
 
 
 class StreamNamespace(BaseNamespace):
@@ -33,14 +37,26 @@ class StreamNamespace(BaseNamespace):
         super(StreamNamespace, self).__init__(*args, **kwargs)
         self.tokenizer = config.classifier_tokenizer
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.socket_session = None
+
+    def can_connect(self):
+        SocketSession.remove_expired()
+        if models.SocketSession.objects(ip=self.environ.get('REMOTE_ADDR')).count() > config.server_max_connection_per_ip:
+            error_msg = 'You have reached the limit of 3 open sockets per IP'
+            self.emit('error', error_msg)
+            self.logger.debug('Disconnected: %s', error_msg)
+            self.disconnect(silent=True)
+            return False
 
     def recv_connect(self):
+
         self.logger.debug('Connect from %s', str(self.socket))
         self.socket_session = models.SocketSession()
         self.socket_session.ip = self.environ.get('REMOTE_ADDR')
         self.socket_session.save()
 
     def on_track(self, track):
+
         tokens = list(self.tokenizer.getSearchTokens(track))
         if not tokens:
             return True
@@ -61,14 +77,14 @@ class StreamNamespace(BaseNamespace):
         self.spawn(fetch_stream)
 
     def recv_disconnect(self):
-        if hasattr(self, 'socket_session'):
+        if self.socket_session:
             self.socket_session.delete()
         self.logger.debug('Disconnect from %s', str(self.socket))
         self.disconnect(silent=True)
 
     def on_ping(self):
         self.logger.debug('Ping from %s', str(self.socket))
-        if hasattr(self, 'socket_session'):
+        if self.socket_session:
             self.socket_session.ping()
 
 

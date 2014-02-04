@@ -13,6 +13,10 @@ var SMM = {
             SMM.stream.on('stream_update', function(data) {
                 SMM.streamData.push(data);
             });
+            SMM.stream.on('error', function(data) {
+                console.log(data);
+                SMM.stream.disconnect();
+            });
 
             $(SMM.streamChannel.stopTracking).click(function() {
                 SMM.stream.disconnect();
