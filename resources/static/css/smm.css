@@ -11,6 +11,7 @@ and open the template in the editor.
 body{
     margin: 0px;
     padding: 0px;
+    background-image: url('../img/bg.png');
     
 }
 
@@ -19,15 +20,17 @@ header.header{
     background-color: #eee;
     border-bottom: 1px solid #aaa;
     padding: 10px;
-    margin-bottom: 20px;
      box-shadow: 0 0 10px 5px #CCCCCC;
     -webkit-box-shadow: 0 0 10px 5px #CCCCCC;
     overflow: hidden;
+    height: 117px;
+    position: relative;
+    z-index: 1;
 }
 #logo{
     overflow: hidden;
     text-align: left;
-    color: #333;
+    color: #666;
     width: 40%;
     float: left;
 }
@@ -90,6 +93,7 @@ header.header{
 
 .chart {
     border: 1px solid #eee;
+    background-color: white;
 }
 
 .row{
@@ -101,7 +105,6 @@ header.header{
 #trackingForm{
     margin-top: 20px;
     text-align: center;
-    width: 450px;
     float: left;
 }
 
@@ -121,5 +124,28 @@ a {color: #4183C4;}
 .infobox{
     padding: 20px;
     border: 1px solid #eee;
-    margin: 20px;
+    margin-top: 20px;
+    background-color: white;
+}
+.txtLeft{
+    text-align: left;
+}
+
+#errorMsg {
+    text-align: center;
+}
+
+#errorMsg section{
+    margin: auto;
+    color: #d62728;
+    width: 450px;
+    background-color: #eee;
+    margin-top: -1px;
+    border: 1px solid #aaa;
+    border-top: none;
+    padding: 10px;
+    -webkit-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+    position: relative;
+    
 }

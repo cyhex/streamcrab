@@ -33,7 +33,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
         'indexes': ['tokens'],
     }
 
-    TTL = 60*60
+    TTL = 60*10
 
     text = mongoengine.StringField(required=True, max_length=1024)
     polarity = mongoengine.FloatField()

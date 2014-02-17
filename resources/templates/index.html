@@ -2,21 +2,22 @@
 <html>
     <head>
         <link href="/static/css/smm.css" rel="stylesheet" type="text/css">
-        <title>Realtime, Twitter sentiment analysis engine</title>
+        <title>Streamcrab - Realtime, Twitter sentiment analysis engine</title>
     </head>
     <body>
         <header class="header">
             <div id='logo'>
                 <h1><a href="/">Streamcrab</a></h1>
                 <span>Realtime, Twitter sentiment analysis engine</span>
-                <div id='github'><a target="_blank" href="https://github.com/cyhex/streamcrab">streamcrab on GitHub</a></div>
+                <a href="https://github.com/cyhex/streamcrab"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+                
             </div>
             <form id="trackingForm" method="get" action="/results">
                 <div>
-                    <div><strong>Search for:</strong></div>
+                    <div class="txtLeft"><strong>Search for:</strong></div>
                     <input type="text" name="keyword" value="{{keyword}}" id="keyword" placeholder="movies, companies, products" >
                 </div>
-                <div>
+                <div class="txtLeft" >
                     <button id="restartTracking">Start search</button>
                 </div>
 

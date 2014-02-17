@@ -41,19 +41,19 @@ class StreamNamespace(BaseNamespace):
 
     def can_connect(self):
         SocketSession.remove_expired()
-        if models.SocketSession.objects(ip=self.environ.get('REMOTE_ADDR')).count() > config.server_max_connection_per_ip:
-            error_msg = 'You have reached the limit of 3 open sockets per IP'
+        if models.SocketSession.objects(ip=self.environ.get('REMOTE_ADDR')).count() >= config.server_max_connection_per_ip:
+            error_msg = 'You have reached the limit of %d open sockets per IP' % config.server_max_connection_per_ip
             self.emit('error', error_msg)
             self.logger.debug('Disconnected: %s', error_msg)
-            self.disconnect(silent=True)
             return False
 
     def recv_connect(self):
-
+        self.can_connect();
         self.logger.debug('Connect from %s', str(self.socket))
         self.socket_session = models.SocketSession()
         self.socket_session.ip = self.environ.get('REMOTE_ADDR')
         self.socket_session.save()
+
 
     def on_track(self, track):
 

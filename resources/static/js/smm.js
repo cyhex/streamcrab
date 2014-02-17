@@ -14,8 +14,12 @@ var SMM = {
                 SMM.streamData.push(data);
             });
             SMM.stream.on('error', function(data) {
-                console.log(data);
+                $('#errorMsg section').html(data)
+                $('#errorMsg').slideDown();
+                $("#keyword").removeClass('loading');
                 SMM.stream.disconnect();
+                SMM.stream = null;
+                
             });
 
             $(SMM.streamChannel.stopTracking).click(function() {
@@ -31,7 +35,7 @@ var SMM = {
                 SMM.stream = null;
                 $(this).submit();
             });
-
+            
             SMM.stream.emit('track', kw);
             SMM.streamData.clear();
             SMM.charts.redraw()
@@ -41,7 +45,10 @@ var SMM = {
                     SMM.stream.emit('ping')
                 }
             }, 2000);
+            
+            return true;
         }
+        
     },
     streamData: {
         data: [],
@@ -143,6 +150,10 @@ var SMM = {
         updateInt: 2000,
                 
         init: function() {
+            if(SMM.stream == null){
+                return null;
+            }
+            
             nv.addGraph(function() {
                 var chartSumColors = d3.scale.ordinal().range(['green', 'red']);
 
