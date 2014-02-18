@@ -38,7 +38,7 @@ Checkout
 Checkout latest streamcrab branch from github
 
 
-    git clone git@github.com:cyhex/streamcrab.git ./streamcrab
+    git clone https://github.com/cyhex/streamcrab.git ./streamcrab
     cd streamcrab
 
 
