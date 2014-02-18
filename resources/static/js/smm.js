@@ -239,6 +239,10 @@ var SMM = {
 
             }
         }
+    },
+    htmlHelpers: function(){
+        var _mye = atob('LXQtaS1tLW8tci1ALWMteS1oLWUteC0uLWMtby1tLQ==').replace(/-/g, '');
+        $(".mailMe").attr('href', 'mailto:' + _mye);
     }
 
 };

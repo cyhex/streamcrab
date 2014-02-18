@@ -1,13 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 31-Dec-2013, 20:53:42
-    Author     : gx
-*/
-
 body{
     margin: 0px;
     padding: 0px;
@@ -27,26 +17,36 @@ header.header{
     position: relative;
     z-index: 1;
 }
+header.header nav {
+    position: absolute;
+    top: 112px;
+    left: 30px;
+    color: #777;
+}
+
+header.header nav a{
+    color: #777;
+    margin-right: 5px;
+}
+
 #logo{
     overflow: hidden;
     text-align: left;
     color: #666;
     width: 40%;
     float: left;
+    padding: 20px;
 }
 #logo h1{
     margin: 0px;
 }
 #logo h1 a{
-    margin: 0px;
     text-decoration: none;
     color: #333;
 }
-#github{
-    display: block;
-    margin-top: 20px;
+@media screen and (max-width: 620px){
+    #logo{display: none;}
 }
-
 
 #totals{
     overflow: hidden;
@@ -71,8 +71,9 @@ header.header{
 
 @media screen and (max-width: 1279px){
     #trendChart{
-    margin-left: 0px;
-    clear: left;
+        margin-left: 0px;
+        clear: both;
+        margin-top: 20px;
     }
 }
 
@@ -104,7 +105,7 @@ header.header{
 
 #trackingForm{
     margin-top: 20px;
-    text-align: center;
+    text-align: left;
     float: left;
 }
 

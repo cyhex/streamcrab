@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="/static/css/smm.css" rel="stylesheet" type="text/css">
+        <title>Streamcrab - Realtime, Twitter sentiment analysis engine</title>
+        <meta name="viewport" content="width=device-width">
+        <meta charset="utf-8">
         <link href="/static/css/nv.d3.css" rel="stylesheet" type="text/css">
         <link href="/static/css/smm.css" rel="stylesheet" type="text/css">
-
-        <script src="/static/js/jquery-1.10.2.min.js"></script>
-        <script src="/static/js/socket.io.js"></script>
-
-        <script src="/static/js/d3.v3.js"></script>
-        <script src="/static/js/nv.d3.min.js"></script>
-        <script src="/static/js/smm.js"></script>
-
-        <title>Streamcrab - Realtime, Twitter sentiment analysis engine</title>
-
     </head>
     <body>
         <header class="header">
             <div id='logo'>
                 <h1><a href="/">Streamcrab</a></h1>
                 <span>Realtime, Twitter sentiment analysis engine</span>
-                <a href="https://github.com/cyhex/streamcrab"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
             </div>
             <form id="trackingForm" method="get" action="/results">
                 <div>
@@ -32,6 +25,15 @@
                 </div>
 
             </form>
+             <a href="https://github.com/cyhex/streamcrab"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+              <nav>
+                <span>Contact: <span>
+                <a href="" class="mailMe">Email</a>
+                <a href="https://github.com/cyhex/" class="">Github</a>
+                <a href="http://de.linkedin.com/in/cyhextimor/" class="">LinkedIn</a>
+                <a href="https://www.xing.com/profile/Timor_Abdulaive" class="">Xing</a>
+                
+            </nav>
         </header>
         <div id='errorMsg' style="display: none;"><section></section></div>
         <div class='row'></div>
@@ -61,10 +63,17 @@
             <svg></svg>
         </div>
 
+        <script src="/static/js/jquery-1.10.2.min.js"></script>
+        <script src="/static/js/socket.io.js"></script>
+
+        <script src="/static/js/d3.v3.js"></script>
+        <script src="/static/js/nv.d3.min.js"></script>
+        <script src="/static/js/smm.js"></script>
+
         <script>
+            SMM.htmlHelpers();
             SMM.streamChannel.listen('{{keyword}}');
             SMM.charts.init();
-           
         </script>
 
         <script>
