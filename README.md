@@ -152,12 +152,12 @@ Training and testing results
 see : https://github.com/cyhex/streamcrab/blob/master/docs/acurracy_tests.md
 
 
-Todo
-----
-
-- Test accuracy of BIG datasets (1M Tweets+)
-- Test accuracy with ngrams
-- Implement queue.full() check in smm.classifier.pool.QueueFeeder
+Production & deployment
+-----------------------
+Run everything behind nginx >= 1.3.13, automate processes management with supervisord.
+Since nginx 1.3.13 supports websockets, so you should probably use latest stable version.
+This is only one way of many to deploy the app.
+in folder ex.conf there are sample config files for nginx and supervisord.
 
 
 Links, Sources etc
@@ -166,5 +166,6 @@ Links, Sources etc
 - http://mpqa.cs.pitt.edu/
 - http://nlp.stanford.edu/sentiment/index.html
 - http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
-- http://www.cs.york.ac.uk/semeval-2013/semeval2013.tgz ?
+- http://nginx.org/en/docs/http/websocket.html
+- http://supervisord.org/
 
