@@ -97,6 +97,17 @@ for more options see
     python toolbox/train-classifier.py --help
 
 
+Start server stack
+------------------
+open 3 shells and type in each:
+    
+    python start-collector.py
+    python start-classifier.py
+    python start-server.py
+    
+
+open browser on http://127.0.0.1:5000
+
 
 Show stats
 ----------
