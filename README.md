@@ -1,7 +1,7 @@
 Streamcrab
 ==========
 
-Streamcrab is a quasi-realtime twitter sentiment analyzer
+Streamcrab is a realtime twitter sentiment analyzer
 
 This is the second version of the tool, and it is rewritten completely from previous version
 (still available in legacy branch)
