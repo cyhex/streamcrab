@@ -1,7 +1,7 @@
 Streamcrab
 ==========
 
-Streamcrab is a quasi-realtime twitter sentiment analyzer
+Streamcrab is a realtime twitter sentiment analyzer
 
 This is the second version of the tool, and it is rewritten completely from previous version
 (still available in legacy branch)
@@ -96,6 +96,17 @@ for more options see
 
     python toolbox/train-classifier.py --help
 
+
+Start server stack
+------------------
+open 3 shells and type in each:
+    
+    python start-collector.py
+    python start-classifier.py
+    python start-server.py
+    
+
+open browser on http://127.0.0.1:5000
 
 
 Show stats
