@@ -48,7 +48,7 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
         if from_id:
             q &= mongoengine.Q(id__gt=from_id)
 
-        return cls.objects(q)[:25]
+        return cls.objects(q)[:100]
 
 
 class SocketSession(mongoengine.Document):
