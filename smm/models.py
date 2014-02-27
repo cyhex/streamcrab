@@ -43,14 +43,16 @@ class ClassifiedStream(mongoengine.Document, MongoEngineDictMx):
 
     @classmethod
     def find_tokens(cls, kw, from_id=None):
+        first_request = False;
         if not from_id:
             d = datetime.datetime.utcnow() - datetime.timedelta(seconds=cls.TTL)
             from_id = ObjectId.from_datetime(d)
+            first_request = True
 
         q = mongoengine.Q(tokens__all=kw) & mongoengine.Q(id__gt=from_id)
         obj = cls.objects(q)
 
-        if not len(obj):
+        if not len(obj) and first_request:
             obj = cls.objects(mongoengine.Q(tokens__all=kw))
 
         return obj[:25]
