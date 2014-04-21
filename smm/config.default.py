@@ -25,7 +25,7 @@ test_mongo_db = dict(db='smm_test', host='localhost', port=27017, is_slave=False
 # default training set
 classifier="maxent_20000"
 # default tokenizer
-classifier_tokenizer = StopStemmTwitterProcessor
+classifier_tokenizer = TwitterProcessor
 # number of classifier processes to start (should not exceed number of cpu cores)
 classifier_pool_size = 1
 
