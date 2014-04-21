@@ -2,7 +2,7 @@ __author__ = 'gx'
 import logging
 import os
 import smm
-from smm.classifier.textprocessing import StopStemmTwitterProcessor, StopTwitterProcessor
+from smm.classifier.textprocessing import TwitterProcessor
 
 basepath =  os.path.realpath(os.path.join(os.path.dirname(smm.__file__),'..'))
 
@@ -48,9 +48,12 @@ twitter_kw_interval_check = 10
 
 # Server Flask & socketio
 # =======================
+server_host = '0.0.0.0'
+server_port = 5000
 server_templates = os.path.join(basepath, 'resources', 'templates')
 server_static = os.path.join(basepath, 'resources', 'static')
 server_debug = True
+server_max_connection_per_ip = 2
 
 server_socketio_handlers = ['websocket', 'xhr-polling', 'xhr-multipart', 'jsonp-polling']
 
