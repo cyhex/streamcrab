@@ -90,7 +90,7 @@ class TwitterMixin(object):
 
         for i in range(len(char_list)):
             _c = char_list[i]
-            if i > 0 and i < len(char_list) - 1:
+            if 0 < i < len(char_list) - 1:
                 if _c != char_list[i - 1] or _c != char_list[i + 1]:
                     clean_list.append(_c)
             else:
